@@ -1,15 +1,35 @@
 {
   "name": "client",
   "version": "0.1.0",
+<<<<<<< HEAD
   "proxy": "http://localhost:3030",
+=======
+<<<<<<< HEAD
+  
+=======
+  "proxy": "http://localhost:3030",
+>>>>>>> bdec9518e38ec97d7f5b556d42b9019e67340e00
+>>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
+<<<<<<< HEAD
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+=======
+<<<<<<< HEAD
+    "http-proxy-middleware": "^2.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.2",
+=======
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+>>>>>>> bdec9518e38ec97d7f5b556d42b9019e67340e00
+>>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -36,5 +56,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  },
+  "options":{
+   "allowedHost":["localhost","localhost"] 
+
+=======
+>>>>>>> bdec9518e38ec97d7f5b556d42b9019e67340e00
+>>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
   }
 }

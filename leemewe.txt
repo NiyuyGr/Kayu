@@ -4,7 +4,15 @@ npm i express
 
 importante instalar
 en carpeta servidor
+<<<<<<< HEAD
 mysql,express,nodemon
+=======
+<<<<<<< HEAD
+mysql,express,nodemon,express-session,cookie-parser y body-parser
+=======
+mysql,express,nodemon
+>>>>>>> bdec9518e38ec97d7f5b556d42b9019e67340e00
+>>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
 En el package cree un scrip para corre el servidor directamente con npm start en el puerto 3030
 
 "start": "node index.js",
