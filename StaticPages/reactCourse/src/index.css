@@ -85,3 +85,7 @@ button:focus-visible {
     display: flex;
     flex-direction: column;
 }
+
+h1, h2{
+  margin: 0;
+}

@@ -27,10 +27,6 @@
     box-shadow:0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
   }
   
-  h1, h2{
-    margin: 0;
-  }
-  
   nav > h2{
     margin: 15px
   }
@@ -46,7 +42,22 @@
     color: var(--black);
     padding: 10px;
     border-radius: 15px;
+    transition: .5s;
   }
+
+.nav--register:hover{
+  transform: translateY(-15%);
+  cursor: pointer;
+}
+
+.nav--info, .nav--login{
+  transition: 0.5s;
+}
+
+.nav--info:hover, .nav--login:hover{
+  transform: translateY(-15%);
+  cursor: pointer;
+}
 
   .landing--title{
     font-size: 5em;
@@ -118,6 +129,11 @@
   .footer--privacy > h3{
     margin: 0;
     padding: 10px 0px;
+    cursor: pointer;
+  }
+
+  .footer--privacy > h3:hover{
+    text-decoration: underline;
   }
 
   .cards{
