@@ -1,0 +1,32 @@
+footer {
+  background-color: var(--blue);
+  color: white;
+  padding: 30px 35px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+  margin-top: auto;
+  display: flex;
+}
+
+.footer--title {
+  color: var(--orange);
+  font-size: 2.2em;
+}
+
+.footer--kayu {
+  margin-right: auto;
+}
+
+.footer--privacy>h3 {
+  margin: 0;
+  padding: 10px 0px;
+  cursor: pointer;
+}
+
+.footer--privacy>h3:hover {
+  text-decoration: underline;
+}

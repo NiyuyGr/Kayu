@@ -84,11 +84,4 @@ button:focus-visible {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-}
-
-h1, h2{
-  margin: 0;
-=======
->>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
 }
