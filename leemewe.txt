@@ -1,0 +1,23 @@
+observaciones
+
+npm i express
+
+importante instalar
+en carpeta servidor
+<<<<<<< HEAD
+mysql,express,nodemon,express-session,cookie-parser y body-parser
+=======
+mysql,express,nodemon
+>>>>>>> bdec9518e38ec97d7f5b556d42b9019e67340e00
+En el package cree un scrip para corre el servidor directamente con npm start en el puerto 3030
+
+"start": "node index.js",
+
+al package del front se le puso :
+
+"proxy": "http://localhost:3030",
+
+en la carpeta del server para instalar nodemon y no tener que estar reiniciando el servidor a cada rato se agrego tmb el script
+
+npm  i nodemon -D 
+"dev": "nodemon server"
