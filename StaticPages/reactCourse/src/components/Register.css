@@ -1,4 +1,4 @@
-.login--container{
+.register--container{
     background-image: url('https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
     background-position: center;
     background-repeat: no-repeat;
@@ -7,13 +7,13 @@
     height: max-content;
 }
 
-.login--container{
+.register--container{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.login--box{
+.register--box{
     position: relative;
     display: flex;
     width: 400px;
@@ -26,7 +26,7 @@
     align-items: center;
 }
 
-.login--title{
+.register--title{
     font-size: 2em;
     color: white;
     text-align: center;
@@ -108,19 +108,27 @@ button:hover{
     outline: none;
 }
 
-.register{
+.register--personality, .login{
     font-size: .9em;
     color: white;
     text-align: center;
-    margin: 24px 0 10px;
+    margin: -15px 0 35px;
 }
 
-.register p a{
+.login{
+    margin: 24px 0px 10px
+}
+
+.register--personality p{
+    margin: 0;
+}
+
+.register--personality p a, .login p a{
     text-decoration: none;
     color: white;
     font-weight: 600;
 }
 
-.register p a:hover{
+.register--personality p a:hover, .login p a:hover{
     text-decoration: underline;
 }
