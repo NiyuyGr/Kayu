@@ -1,45 +1,30 @@
 const express= require("express");
 const mysql =require("mysql");
 const cors = require("cors");
-<<<<<<< HEAD
-
-const app= express();
-
-app.use(cors());
-=======
 const bodyParser = require("body-parser");
 const app= express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://127.0.0.1:5173"],
     methods: ["GET","POST","DELETE","PUT"],
     credentials: true
 })
 );
 
->>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
 app.use(express.json());
 
 const db=mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "1234",
-<<<<<<< HEAD
-    database: "mydb"
-=======
     database: "Kayu"
->>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
 })
 
 app.post('/Login',(req,res) => {
     
-<<<<<<< HEAD
-    const sql =`SELECT * FROM usuario WHERE NombreUsuario = ? AND PassUsuario = ?`;
-=======
     const sql ="SELECT * FROM usuario WHERE NombreUsuario = ? AND PassUsuario = ?;";
->>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
     
     db.query(sql, [req.body.user, req.body.password], (err, data) => {
        if(err) return res.text("Error en el login");
@@ -52,14 +37,7 @@ app.post('/Login',(req,res) => {
     })
 })
 
-<<<<<<< HEAD
-app.get("/api",(req,res) => {
-    res.json({ "users": ["usuario 1","usuario 2", "usuario 3", "usuario 4"] });
-});
-
-
-=======
-app.post('/Signin',(req,res) => {
+app.post('/Register',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
     //(Modificar BD)
     db.query(Create,[req.body.name,req.body.password,req.body.personality],(err, data) => {
@@ -121,7 +99,6 @@ app.get("/GetId/:userName" ,(req,res) => {
         res.send(result);
     });
 });
->>>>>>> 8e9410004e6e4b94838fe48607dc427f4ab9356a
 
 app.listen(3030,()=>{
     console.log(`Servidor escuchando desde 3030`);
