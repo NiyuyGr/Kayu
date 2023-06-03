@@ -3,7 +3,7 @@ import './Navbar.css'
 
 export default function Navbar(){
     return(
-    <nav>
+    <nav className="nav">
         <h1 className='nav--title'>Kayú</h1>
         <h2 className='nav--info'>Conócenos</h2>
         <h2 className='nav--login'>Inicia sesión</h2>

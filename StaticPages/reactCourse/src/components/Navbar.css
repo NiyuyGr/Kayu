@@ -5,16 +5,18 @@ nav {
     display: flex;
     align-items: center;
     box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+    height: 20px;
 }
 
 nav>h2 {
-    margin: 15px
+    margin: 5px;
+    font-size: 15px;
 }
 
 .nav--title {
     margin-right: auto;
     color: var(--orange);
-    font-size: 2.5em;
+    font-size: 30px;
 }
 
 .nav--register {
@@ -23,6 +25,7 @@ nav>h2 {
     padding: 10px;
     border-radius: 15px;
     transition: .5s;
+    height: 20px;
 }
 
 .nav--register:hover {

@@ -5,6 +5,7 @@ footer {
   display: flex;
   align-items: center;
   box-shadow: 0px 2.98256px 7.4564px rgba(0, 0, 0, 0.1);
+  height: 95px;
 }
 
 footer {
