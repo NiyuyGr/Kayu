@@ -31,9 +31,9 @@ export default function Login(){
                                 <input type="password" onChange={e=>setPassword(e.target.value)} required/>
                                 <label htmlFor="">Contraseña</label>
                             </div>
-                            <button>Conectarse</button>
+                            <button className="formButton">Conectarse</button>
                             <div className="register">
-                                <p>¿Aún no tienes cuenta?<Link to="/Register">¡Regístrate!</Link></p>
+                                <p>¿Aún no tienes cuenta? <Link to="/Register">¡Regístrate!</Link></p>
                             </div>
                         </form>
                     </div>
