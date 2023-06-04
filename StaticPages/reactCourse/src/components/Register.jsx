@@ -44,7 +44,7 @@ export default function Register(){
                             <div className="register--personality">
                                 <p> ¡Conoce tu personalidad <a href="https://www.16personalities.com/es/test-de-personalidad" target="blank"> aquí!</a></p>
                             </div>
-                            <button>Registrarse</button>
+                            <button className="formButton">Registrarse</button>
                             <div className="login">
                                 <p>¿Ya tienes una cuenta?<a href="/Login"> ¡Inicia sesión!</a></p>
                             </div>

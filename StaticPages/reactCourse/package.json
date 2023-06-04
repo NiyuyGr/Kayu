@@ -2,6 +2,10 @@
   "name": "reactcourse",
   "private": true,
   "version": "0.0.0",
+<<<<<<< HEAD
+=======
+  "type": "module",
+>>>>>>> d91e249156896ca60857756700ac5cca783f5947
   "proxy": "http://localhost:3030",
   "scripts": {
     "dev": "vite",
@@ -10,10 +14,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.13.3",
     "axios": "^1.4.0",
+<<<<<<< HEAD
     "http-proxy-middleware": "^2.0.6",
+=======
+    "leaflet": "^1.9.4",
+>>>>>>> d91e249156896ca60857756700ac5cca783f5947
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.11.2"
   },
   "devDependencies": {

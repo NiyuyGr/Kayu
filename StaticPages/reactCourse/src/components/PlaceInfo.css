@@ -1,0 +1,118 @@
+.placeInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.place--container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.place--conColumns{
+    display: flex;
+    flex-direction: row;
+    align-items: top;
+    justify-content: center;
+    max-height: 700px;
+}
+
+.place--conColumns > div{
+    padding: 0 15px;
+}
+
+.place--containerL{
+    width: 50%;
+}
+
+.place--rating{
+    display: flex;
+    align-items: center;
+}
+
+.place--containerR{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+}
+
+.place--container h2{
+    text-align: center;
+    font-size: 3em;
+}
+
+.place--container img{
+    width: 100%;
+    height: 500px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.place--containerL p{
+    padding: 20px;
+    text-align: justify;
+}
+
+.reviews--container{
+    min-height: 0;
+    margin-bottom: 20px;
+    overflow-y: auto;
+}
+
+.place--map{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.place--recomended{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+
+.place--recomended-title {
+    font-size: 3em;
+    text-align: center;
+    max-width: 50%;
+}
+
+.campoTexto{
+    margin-top: auto;
+    margin-bottom: 36px;
+    position: relative;
+}
+
+.css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input{
+    width: 88% !important;
+}
+
+.btn-sendReview{
+    position:absolute;
+    right: 2.5%;
+    bottom: 10%;
+    width: 60px;
+    height: 30px;
+    border-radius: 5px;
+    border: none;
+    color: var(--lwhite);
+    background-color: var(--blue);
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.btn-sendReview:hover{
+    background-color: var(--sorange);
+    transform: translateY(-15%);
+}
+
+/* MAPA */
+.leaflet-container{
+    height: 700px;
+    min-width: 400px;
+    width: 60%;
+}
