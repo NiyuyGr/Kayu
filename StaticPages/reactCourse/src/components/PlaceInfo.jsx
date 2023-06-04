@@ -2,18 +2,32 @@ import React from "react";
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Card from './Card'
+import Review from './Review'
 import './PlaceInfo.css'
+import 'leaflet/dist/leaflet.css'
 import Rating from '@mui/material/Rating'
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import TextField from '@mui/material/TextField'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { Icon } from 'leaflet'
 
-export default function PlaceInfo(){
+export default function PlaceInfo(props){
     
     const testInfo = [
         {
-            nombre: "San Juan de la Verga",
+            nombre: "Tangamandapio",
             descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse eveniet animi officiis quis aperiam necessitatibus adipisci provident deleniti velit blanditiis facere cum non autem nulla, tempore doloribus nesciunt! Officia, culpa! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt quibusdam cumque doloribus, repellendus ipsa sint expedita! Ex, possimus eveniet harum sit expedita quis a eaque asperiores, blanditiis ullam omnis impedit!",
             puntuacion: 3.5,
+        }
+    ]
+
+    const markers = [
+        {
+            geocode: [19.4326, -99.1332],
+            popUp : "Zócalo de la CDMX"
+        },
+        {
+            geocode: [19.434376193008248, -99.13308591837603],
+            popUp: "Catedral Metropolitana"
         }
     ]
 
@@ -35,7 +49,13 @@ export default function PlaceInfo(){
                                 <span> [{testInfo[0].puntuacion}]</span>
                             </div>
                             <h3>Reseñas de los usuarios</h3>
-                            <p>RESEñAS Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus quod aliquid minima dolorem minus amet optio explicabo pariatur nisi, natus accusantium quaerat ipsum, facere adipisci quia neque. Officiis, distinctio quis.</p>
+                            <div className="reviews--container">
+                                <Review />
+                                <Review />
+                                <Review />
+                                <Review />
+                                <Review />
+                            </div>
                             <div className="campoTexto">
                                 <TextField
                                     id="outlined-multiline-static"
@@ -43,7 +63,6 @@ export default function PlaceInfo(){
                                     fullWidth
                                     multiline
                                     rows={4}
-                                    defaultValue="Default Value"
                                 />
                                 <button className="btn-sendReview">Enviar</button>
                             </div>
@@ -52,8 +71,21 @@ export default function PlaceInfo(){
                     </div>
                 </div>
                 <section className="place--map">
-                    <h1>MAPA</h1>
-                    <img src="https://depor.com/resizer/tWkgaFkRSfQvJrxQJP3zxVe35K4=/580x330/smart/filters:format(jpeg):quality(75)/cloudfront-us-east-1.images.arcpublishing.com/elcomercio/DOSTJYG5PVBK3ELX3UXALXJYPQ.jpg" />
+                    <div>
+                        <h2>UBICACIÓN</h2>
+                    </div>
+                    <MapContainer center={[19.4326, -99.1332]} zoom={19}>
+                        <TileLayer
+                            attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        {markers.map((marker) =>(
+                                <Marker position={marker.geocode}>
+                                    <Popup>{marker.popUp}</Popup>
+                                </Marker>
+                        ))
+                        }
+                    </MapContainer>
                 </section>
                 <section className='place--recomended'>
                     <h1 className='place--recomended-title'>

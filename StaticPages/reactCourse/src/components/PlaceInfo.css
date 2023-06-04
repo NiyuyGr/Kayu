@@ -16,6 +16,7 @@
     flex-direction: row;
     align-items: top;
     justify-content: center;
+    max-height: 700px;
 }
 
 .place--conColumns > div{
@@ -49,9 +50,15 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.place--container p{
+.place--containerL p{
     padding: 20px;
     text-align: justify;
+}
+
+.reviews--container{
+    min-height: 0;
+    margin-bottom: 20px;
+    overflow-y: auto;
 }
 
 .place--map{
@@ -59,10 +66,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.place--map img{
-    max-width: 700px;
 }
 
 .place--recomended{
@@ -105,4 +108,11 @@
 .btn-sendReview:hover{
     background-color: var(--sorange);
     transform: translateY(-15%);
+}
+
+/* MAPA */
+.leaflet-container{
+    height: 700px;
+    min-width: 400px;
+    width: 60%;
 }
