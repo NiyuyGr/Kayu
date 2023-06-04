@@ -9,7 +9,7 @@ function CreateU() {
     const navigate=useNavigate();
     function handleSubmit(event){
         event.preventDefault();
-        axios.post('http://localhost:3030/CreateU', {name,password,personality})
+        axios.post('/api/CreateU', {name,password,personality})
         .then(res => 
              console.log(res))
         .catch(err => console.log(err));

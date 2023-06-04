@@ -14,7 +14,7 @@ export default function Register(){
 
     function handleSubmit(event){
         event.preventDefault();
-        axios.post('http://localhost:3030/Register', {name,password,personality})
+        axios.post('/api/Register', {name,password,personality})
         .then((res) => {alert(res.data) 
             navigate('/Login')
         })

@@ -1,10 +1,19 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Card from './Card'
+import axios from 'axios'
 import './Landing.css'
 
 function Landing() {
+    useEffect( () => {    
+        axios.get("/api",{withCredentials: true})
+        .then((response) => {
+              
+            alert(response.data);
+            
+        }) 
+    },[]);
     return (
         <div className='general--container'>
             <Navbar />

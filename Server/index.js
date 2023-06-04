@@ -1,19 +1,21 @@
-const express= require("express");
-const mysql =require("mysql");
+const express = require("express");
+const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const session =require("express-session")
+const cookieParser =require("cookie-parser");
 const app= express();
 
 app.use(bodyParser.urlencoded({extended: true}));
-
 app.use(cors({
-    origin: ["http://127.0.0.1:5173"],
+    origin: 'http://127.0.0.1:5173',
     methods: ["GET","POST","DELETE","PUT"],
-    credentials: true
+    credentials: true,
 })
 );
-
 app.use(express.json());
+app.use(cookieParser());
+
 
 const db=mysql.createConnection({
     host: "localhost",
@@ -22,17 +24,29 @@ const db=mysql.createConnection({
     database: "Kayu"
 })
 
-app.post('/Login',(req,res) => {
-    
+app.use(session({
+    secret: 'secret',
+    name: 'galleta',
+    resave: false,
+    saveUninitialized: true,
+    cookie:{
+        secure:false,
+        maxAge: 1000*60*60*24,
+        
+    }
+}));
+app.post('/api/Login',(req,res) => {
+
     const sql ="SELECT * FROM usuario WHERE NombreUsuario = ? AND PassUsuario = ?;";
-    
-    db.query(sql, [req.body.user, req.body.password], (err, data) => {
+    db.query(sql, [req.body.user, req.body.password], (err, result) => {
        if(err) return res.text("Error en el login");
-       if(data.length > 0){
-        return res.json("Login Exitosoo")
+       if(result.length > 0){ 
+         req.session.userid=req.body.user
+          console.log(req.session)      
+        return res.json({Login:true});
 
        }else{
-       return res.json("Datos no encontrados")
+         return res.json({Login:false});
         }
     })
 })
@@ -88,7 +102,6 @@ app.get("/CrudG" ,(req,res) => {
     });
 });
 
-
 app.get("/GetId/:userName" ,(req,res) => {
     const getId="SELECT * FROM usuario WHERE NombreUsuario = ?";
    console.log(req.params.userName);
@@ -100,6 +113,10 @@ app.get("/GetId/:userName" ,(req,res) => {
     });
 });
 
+app.get("/api",(req,res)=>{
+        console.log(req.session.userid)
+        res.send(req.session.userid)
+});
 app.listen(3030,()=>{
     console.log(`Servidor escuchando desde 3030`);
 });

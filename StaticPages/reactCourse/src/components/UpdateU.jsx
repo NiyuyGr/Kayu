@@ -12,7 +12,7 @@ function UpdateU() {
     
         
     useEffect( () => {    
-            axios.get(`http://localhost:3030/GetId/${userName}`)
+            axios.get(`/api/GetId/${userName}`)
             .then((response) => {
                   
                 setUsuario(response.data[0]);

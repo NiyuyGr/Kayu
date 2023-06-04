@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Landing from './components/Landing'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -10,24 +10,29 @@ import UpdateU from './components/UpdateU';
 import CreateU from './components/CreateU';
 import ViewU from './components/ViewU'
 import { Route, Routes } from 'react-router-dom';
-
+import axios from 'axios'
 function App() {
   
   //<Landing />
+    
+
   
   return (
     <>    
     <Routes>
+      {/*Rutas publicas*/}
       <Route path="/" element = {<Landing />} />
       <Route path="/Login" element = {<Login />} />
       <Route path="/Register" element = {<Register />} />
       <Route path="/PlaceInfo" element = {<PlaceInfo />} />
+      {/*Rutas admin*/}
       <Route path="/OpAdmin" element = {<OpAdmin />} />
       <Route path="/OpAdmin/CRUDU" element = {<CRUDU />} />
       <Route path="/OpAdmin/CRUDL" element = {<CRUDL />} />
       <Route path="/OpAdmin/CRUDU/UpdateU/:nameUser" element = {<UpdateU />} />
       <Route path="/OpAdmin/CRUDU/CreateU" element = {<CreateU />} />
       <Route path="/OpAdmin/CRUDU/ViewU/:nameUser" element = {<ViewU />} />
+      {/*Rutas usuario reistrado*/}
     </Routes>
 
     </>

@@ -6,14 +6,14 @@ function CRUDU(){
       const[UserList,setUserList]=useState([]);
 
         useEffect( () => {
-              axios.get('http://localhost:3030/CrudG/')
+              axios.get('/api/CrudG/')
               .then((response) => {
                 setUserList(response.data);
               })  
         },[])
        
         const deleteUser =(userName) => {
-                axios.delete(`http://localhost:3030/DeleteU/${userName}`)
+                axios.delete(`/api/DeleteU/${userName}`)
                 
                        window.location.reload(false);
         } 

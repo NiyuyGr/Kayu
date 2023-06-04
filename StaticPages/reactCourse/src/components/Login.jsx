@@ -3,15 +3,34 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import axios from 'axios'
 import './Login.css'
+import { useNavigate } from "react-router-dom";
 
 export default function Login(){
     const[user,setUser]=useState('');
     const[password,setPassword]=useState('');
+    const navigate=useNavigate();
 
+    
     function handleSubmit(event){
         event.preventDefault();
-        axios.post('http://localhost:3030/Login', {user, password})
-        .then(res => console.log(res))
+        axios.post("/api/Login", {user, password},{withCredentials:true})
+        .then(res =>{
+            console.log(res);
+            if(res.data.Login){
+                alert("Sesion iniciada con Exito")
+                document.cookie;
+                if(res.data.User != "admin"){
+                    navigate('/');
+                }else{
+                    navigate('/OpAdmin')
+                }
+
+                
+            }else{
+                alert("Error en inicio de sesion")
+            }
+        } 
+            )
         .catch(err => console.log(err));
         }
     return(
