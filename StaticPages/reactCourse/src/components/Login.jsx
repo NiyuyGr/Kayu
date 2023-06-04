@@ -1,4 +1,5 @@
 import React,{useState} from "react";
+import { Link } from "react-router-dom"
 import Navbar from './Navbar'
 import Footer from './Footer'
 import axios from 'axios'
@@ -32,7 +33,7 @@ export default function Login(){
                             </div>
                             <button>Conectarse</button>
                             <div className="register">
-                                <p>¿Aún no tienes cuenta?<a href="#"> ¡Regístrate!</a></p>
+                                <p>¿Aún no tienes cuenta?<Link to="/Register">¡Regístrate!</Link></p>
                             </div>
                         </form>
                     </div>

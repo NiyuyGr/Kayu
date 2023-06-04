@@ -17,6 +17,7 @@ nav>h2 {
     margin-right: auto;
     color: var(--orange);
     font-size: 30px;
+    text-decoration: none;
 }
 
 .nav--register {
