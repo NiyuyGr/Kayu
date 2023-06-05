@@ -79,19 +79,18 @@ app.delete('/api/DeleteU/:userName',(req,res) =>{
 
 app.put('/api/UpdateU',(req,res) =>{
     const UPDATE = "UPDATE usuario  SET NombreUsuario = ?,PassUsuario= ?,Personalidad_idPersonalidad = ? WHERE NombreUsuario = ?";
+    
     console.log(req.body.newname);
-    if (req.body.name==req.body.userName){
-        res.json("no se realizo ningun cambio");
-
-    }
-    else{
+    console.log(req.body.newpassword);
+    console.log(req.body.newpersonality);
+    console.log(req.body.userName);
     db.query(UPDATE,[req.body.newname,req.body.newpassword,req.body.newpersonality,req.body.userName],(err,data) =>{
         if(err) res.json("No se actualizaron datos");
             
         res.json("Dato actualizado :D");
        
     })
-    }
+    
 })
 
 app.get("/api/CrudG" ,(req,res) => {

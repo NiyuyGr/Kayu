@@ -10,7 +10,7 @@ export const ProtectedRouteAdmin =({user}) =>{
 
 export const ProtectedRouteUser =({user}) =>{
    
-    if(user =="" && user=="admin"){
+    if(user =="" || user=="admin"){
         return <Navigate to="/"/>
     }
 return <Outlet/>

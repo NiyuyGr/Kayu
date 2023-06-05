@@ -30,8 +30,6 @@ function App() {
     }
     if(usuario !="admin" && usuario != ""){
       navigate("/PlaceInfo")
-    }else{
-      navigate("/")
     }
     
     
