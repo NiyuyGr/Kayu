@@ -26,9 +26,9 @@ const db=mysql.createConnection({
 
 app.use(session({
     secret: 'secret',
-    name: 'galleta',
+    name: 'usuario',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie:{
         secure:false,
         maxAge: 1000*60*60*24,
@@ -43,7 +43,7 @@ app.post('/api/Login',(req,res) => {
        if(result.length > 0){ 
          req.session.userid=req.body.user
           console.log(req.session)      
-        return res.json({Login:true});
+        return res.json({Login:true,User:req.body.user});
 
        }else{
          return res.json({Login:false});
@@ -51,7 +51,7 @@ app.post('/api/Login',(req,res) => {
     })
 })
 
-app.post('/Register',(req,res) => {
+app.post('/api/Register',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
     //(Modificar BD)
     db.query(Create,[req.body.name,req.body.password,req.body.personality],(err, data) => {
@@ -60,7 +60,7 @@ app.post('/Register',(req,res) => {
     })
 })
 
-app.post('/CreateU',(req,res) => {
+app.post('/api/CreateU',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
     //(Modificar BD)
     db.query(Create,[req.body.name,req.body.password,req.body.personality],(err, data) => {
@@ -69,7 +69,7 @@ app.post('/CreateU',(req,res) => {
     })
 })
 
-app.delete('/DeleteU/:userName',(req,res) =>{
+app.delete('/api/DeleteU/:userName',(req,res) =>{
     const Delete = "DELETE FROM usuario WHERE  NombreUsuario= ?";
     db.query(Delete,req.params.userName,(err,data) =>{
         if(err) res.json(" No se hizo ninguna eliminacion :(");
@@ -77,7 +77,7 @@ app.delete('/DeleteU/:userName',(req,res) =>{
     })
 })
 
-app.put('/UpdateU',(req,res) =>{
+app.put('/api/UpdateU',(req,res) =>{
     const UPDATE = "UPDATE usuario  SET NombreUsuario = ?,PassUsuario= ?,Personalidad_idPersonalidad = ? WHERE NombreUsuario = ?";
     console.log(req.body.newname);
     if (req.body.name==req.body.userName){
@@ -94,7 +94,7 @@ app.put('/UpdateU',(req,res) =>{
     }
 })
 
-app.get("/CrudG" ,(req,res) => {
+app.get("/api/CrudG" ,(req,res) => {
     const getInfo="SELECT * FROM usuario";
     db.query(getInfo,(err,result) => {
         
@@ -102,7 +102,7 @@ app.get("/CrudG" ,(req,res) => {
     });
 });
 
-app.get("/GetId/:userName" ,(req,res) => {
+app.get("/api/GetId/:userName" ,(req,res) => {
     const getId="SELECT * FROM usuario WHERE NombreUsuario = ?";
    console.log(req.params.userName);
     db.query(getId,req.params.userName,(err,result) => {
@@ -114,7 +114,6 @@ app.get("/GetId/:userName" ,(req,res) => {
 });
 
 app.get("/api",(req,res)=>{
-        console.log(req.session.userid)
         res.send(req.session.userid)
 });
 app.listen(3030,()=>{

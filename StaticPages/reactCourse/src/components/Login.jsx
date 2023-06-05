@@ -19,14 +19,7 @@ export default function Login(){
             console.log(res);
             if(res.data.Login){
                 alert("Sesion iniciada con Exito")
-                document.cookie;
-                if(res.data.User != "admin"){
-                    navigate('/');
-                }else{
-                    navigate('/OpAdmin')
-                }
-
-                
+                location.reload(); 
             }else{
                 alert("Error en inicio de sesion")
             }

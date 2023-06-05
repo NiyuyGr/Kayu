@@ -10,12 +10,10 @@ function CRUDU(){
               .then((response) => {
                 setUserList(response.data);
               })  
-        },[])
+        },[UserList])
        
         const deleteUser =(userName) => {
-                axios.delete(`/api/DeleteU/${userName}`)
-                
-                       window.location.reload(false);
+                axios.delete(`/api/DeleteU/${userName}`)          
         } 
         const updateUser = (userName) => {
                 navigate(`./UpdateU/${userName}`);
@@ -46,7 +44,6 @@ function CRUDU(){
                                         <td>    
                                         <button onClick={() => {viewUser(val.NombreUsuario)}}>Ver</button>
                                         <button onClick={() => {updateUser(val.NombreUsuario)}}>Actualizar Datos</button>
-
                                         <button onClick={() => {deleteUser(val.NombreUsuario)}}>Eliminar</button>
                                                 
                                                 

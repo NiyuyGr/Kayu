@@ -26,7 +26,7 @@ function UpdateU() {
         const newpassword=document.getElementById("password").value
         const newpersonality=document.getElementById("personality").value
 
-        axios.put("http://localhost:3030/UpdateU", {newname,newpassword,newpersonality,userName})
+        axios.put("/api/UpdateU", {newname,newpassword,newpersonality,userName})
         .then(res => navigate("../OpAdmin/CRUDU"))
 
         .catch(err => console.log(err));

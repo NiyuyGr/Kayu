@@ -6,14 +6,7 @@ import axios from 'axios'
 import './Landing.css'
 
 function Landing() {
-    useEffect( () => {    
-        axios.get("/api",{withCredentials: true})
-        .then((response) => {
-              
-            alert(response.data);
-            
-        }) 
-    },[]);
+    
     return (
         <div className='general--container'>
             <Navbar />
