@@ -39,7 +39,7 @@ app.post('/api/Login',(req,res) => {
 
     const sql ="SELECT * FROM usuario WHERE NombreUsuario = ? AND PassUsuario = ?;";
     db.query(sql, [req.body.user, req.body.password], (err, result) => {
-       if(err) return res.text("Error en el login");
+       if(err) return res.text("Error en el login")
        if(result.length > 0){ 
          req.session.userid=req.body.user
           console.log(req.session)      
@@ -116,6 +116,7 @@ app.get("/api/GetId/:userName" ,(req,res) => {
 app.get("/api",(req,res)=>{
         res.send(req.session.userid)
 });
+
 app.listen(3030,()=>{
     console.log(`Servidor escuchando desde 3030`);
 });

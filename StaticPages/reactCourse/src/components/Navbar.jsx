@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom"
 export default function Navbar(){
     const  navigate=useNavigate();
     const [usuario,setUser]=useState("")
+    
     useEffect( () => {  
      
         axios.get("/api",{withCredentials: true})
@@ -17,8 +18,9 @@ export default function Navbar(){
             navigate("/OpAdmin")
           }
           if(usuario !="admin" && usuario !=""){
-            navigate("/Landing")
+            navigate("/PlaceInfo")
           }
+          
         
     },[usuario]);
 

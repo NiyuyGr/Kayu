@@ -17,15 +17,23 @@ function App() {
   //<Landing />
     
     const [usuario,setUser]=useState("");
-    
+    const navigate=useNavigate()
     useEffect( () => {  
      
     axios.get("/api",{withCredentials: true})
       .then((response) => { 
      setUser(response.data)
-        
+      
     }) 
-
+    if(usuario=="admin"){
+      navigate("/OpAdmin")
+    }
+    if(usuario !="admin" && usuario != ""){
+      navigate("/PlaceInfo")
+    }else{
+      navigate("/")
+    }
+    
     
     
 },[usuario]);
@@ -38,9 +46,10 @@ function App() {
       <Route path="/" element = {<Landing />} />
       <Route path="/Login" element = {<Login />} />
       <Route path="/Register" element = {<Register />} />
+      
       <Route path="/" element = {<ProtectedRouteUser user={usuario} />} >
-      <Route path="/Landing" element = {<Landing />} />
-      <Route path="/PlaceInfo" element = {<PlaceInfo />} />
+        <Route path="/Landing" element = {<Landing />} />
+        <Route path="/PlaceInfo" element = {<PlaceInfo />} />
       </Route>
       {/*Rutas admin*/}
       
