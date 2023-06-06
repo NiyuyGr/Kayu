@@ -11,13 +11,13 @@ import CancelIcon from "@mui/icons-material/Close"
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridRowModes } from '@mui/x-data-grid';
 
 function EditToolbar(props) {
-        const { setRows, setRowModesModel } = props
-        const handleClick = () => {
-                const id = randomId()
-                setRows(oldRows => [...oldRows, { id, name: "", age: "", isNew: true }])
+        const { setRows, setRowModesModel, filas } = props
+        const handleClick = () => { 
+                const id = filas.length
+                setRows(oldRows => [...oldRows, { NombreUsuario: "", PassUsuario: "", Personalidad_idPersonalidad: "", id, isNew: true }])
                 setRowModesModel(oldModel => ({
                         ...oldModel,
-                        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" }
+                        [id]: { mode: GridRowModes.Edit, fieldToFocus: "NombreUsuario" }
                 }))
         }
         return (
@@ -32,12 +32,10 @@ function EditToolbar(props) {
 function CRUDU(){
         const navigate =useNavigate();
         const [UserList,setUserList]=useState([]);
-        const [newname,setNewname]=useState("empty");
-        const [newpassword,setNewpassword]=useState("empty");
-        const [newpersonality,setNewpersonality]=useState("");
         const [rows,setRows] = useState([])
-        const [oldUserName, setOldUserName] = useState("empty");
         const [rowModesModel, setRowModesModel] = useState({})
+        const [oldUserName, setOldUserName] = useState("empty")
+        const [filLen, setFilLen] = useState(0)
 
         const handleRowEditStart = (params, event) => {
                 event.defaultMuiPrevented = true
@@ -58,6 +56,7 @@ function CRUDU(){
         }
         
         const handleDeleteClick = id => () => {
+                deleteUser(filas.find(a => a.id == id).NombreUsuario)
                 setRows(rows.filter(row => row.id !== id))
         }
         
@@ -74,9 +73,6 @@ function CRUDU(){
 
         const processRowUpdate = newRow => {
                 const updatedRow = { ...newRow, isNew: false }
-                setNewname(newRow.NombreUsuario)
-                setNewpassword(newRow.PassUsuario)
-                setNewpersonality(newRow.Personalidad_idPersonalidad)
                 updateUser(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
                 setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)))
                 console.log(updatedRow)
@@ -151,18 +147,19 @@ function CRUDU(){
                 .then((response) => {
                 setUserList(response.data);
         })  
-        },[UserList,newname,newpassword,newpersonality])
+        },[UserList])
         const deleteUser =(userName) => {
                 axios.delete(`/api/DeleteU/${userName}`)          
         }
 
 
         const updateUser = (userName,pas,pers) => {
-        console.log("Newname " + newname)
+        console.log("Newname " + userName)
+        console.log("Oldname " + oldUserName)
         //if(newname=="empty") newname=userName;
         //if(newpassword=="empty")newpassword=pas;
         //if(newpersonality=="") newpersonality=pers;    
-        axios.put("/api/UpdateU", {newname,newpassword,newpersonality,oldUserName})
+        axios.put("/api/UpdateU", {userName,pas,pers,oldUserName})
         .then(res => alert("Usuario modificado"))
                 setNewname("empty")
                 setNewpassword("empty")
@@ -179,6 +176,7 @@ function CRUDU(){
                 Object.assign(element, {id:index})
         })
 
+        const numFilas = filas.length
 
 return(
         <div>
@@ -234,7 +232,7 @@ return(
                                         toolbar: EditToolbar
                                 }}
                                 slotProps={{
-                                        toolbar: { setRows, setRowModesModel }
+                                        toolbar: { setRows, setRowModesModel, filas  }
                                 }}
                         />
                 </div>

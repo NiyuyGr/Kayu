@@ -21,7 +21,7 @@ export default function Navbar(){
           document.querySelectorAll(".admin--close").forEach(a=>a.style.display = "flex");
         }
         else if(usuario !="admin" && usuario !=""){
-          navigate("/")
+          
           document.querySelectorAll(".nav--element").forEach(a=>a.style.display = "none");
           document.querySelectorAll(".nav--elementLog").forEach(a=>a.style.display = "initial");
           document.querySelectorAll(".admin--close").forEach(a=>a.style.display = "none");
@@ -33,6 +33,11 @@ export default function Navbar(){
         }
     },[usuario]);
 
+    const destroyCookie = () =>{
+      axios.get("/api/Destroy")
+      .then((response) =>
+      navigate("/") )
+    }
 
     return(
     
@@ -41,7 +46,7 @@ export default function Navbar(){
         <h2 className='nav--meet' onClick={() => {navigate('/')}}>Conócenos</h2>
         <h2 className='nav--elementLog' onClick={() => {navigate('/PlaceInfo')}}>Recomendaciones</h2>
         <h2 className='nav--elementLog nav--profile' onClick={() => {navigate('/PlaceInfo')}}><span id="nav--usuario">Hola {user}</span><span id="nav--perfil">Ver perfil</span></h2>
-        <h2 className="nav--elementLog admin--close">Cerrar sesión</h2>
+        <h2 className="nav--elementLog admin--close" onClick={()=>{destroyCookie()}}>Cerrar sesión</h2>
         <h2 className='nav--element' onClick={() => {navigate('/Login')}}>Inicia sesión</h2>
         <h2 className='nav--element nav--register' onClick={() => {navigate('/Register')}}>Regístrate</h2>
     </nav>

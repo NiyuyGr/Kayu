@@ -94,11 +94,11 @@ app.delete('/api/DeleteL/:idLugar',(req,res) =>{
 app.put('/api/UpdateU',(req,res) =>{
     const UPDATE = "UPDATE usuario  SET NombreUsuario = ?,PassUsuario= ?,Personalidad_idPersonalidad = ? WHERE NombreUsuario = ?";
     
-    console.log(req.body.newname);
-    console.log(req.body.newpassword);
-    console.log(req.body.newpersonality);
     console.log(req.body.userName);
-    db.query(UPDATE,[req.body.newname,req.body.newpassword,req.body.newpersonality,req.body.userName],(err,data) =>{
+    console.log(req.body.pas);
+    console.log(req.body.pers);
+    console.log(req.body.oldUserName);
+    db.query(UPDATE,[req.body.userName,req.body.pas,req.body.pers,req.body.oldUserName],(err,data) =>{
         if(err) res.json("No se actualizaron datos");
             
         res.json("Dato actualizado :D");
@@ -154,7 +154,7 @@ app.get("/api",(req,res)=>{
 });
 app.get("/api/Destroy",(req,res)=>{
     req.session.destroy();
-    res.json("nmms se cerro la sesion wwe");
+    res.json("Sesion cerrada");
 })
 app.listen(3030,()=>{
     console.log(`Servidor escuchando desde 3030`);

@@ -24,16 +24,12 @@ function CRUDL(){
         navigate('./CreateP');
         }
 
-    const destroyCookie =() =>{
-        axios.get("/api/DEstroy")
-        .then((response) =>
-        navigate("/") )
-        }
+   
     return(
         <div>
         <h1> Administración de Lugares</h1>
         <button onClick={() => {createPlace()}}>Crear</button>
-        <button onClick={() => {destroyCookie()}}>Cerrar Sesion</button>
+        
        {PlaceList.map((val)=>{
         return (
                 <table key={val.idLugar} border="2">
