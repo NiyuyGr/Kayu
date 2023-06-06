@@ -21,8 +21,10 @@ nav>h2 {
     text-decoration: none;
 }
 
-.nav--register {
+.nav--register{
     background-color: var(--orange);
+    min-width: 80px;
+    text-align: center;
     color: var(--black);
     padding: 10px;
     border-radius: 15px;
@@ -30,18 +32,47 @@ nav>h2 {
     height: 20px;
 }
 
-.nav--register:hover {
-    transform: translateY(-15%);
-    cursor: pointer;
-}
-
-.nav--info,
-.nav--login {
+.nav--element,
+.nav--elementLog,
+.nav--meet{
     transition: 0.5s;
 }
 
-.nav--info:hover,
-.nav--login:hover {
-    transform: translateY(-15%);
+.nav--register:hover, 
+.nav--element:hover,
+.nav--elementLog:hover,
+.nav--meet:hover {
+    transform: translateY(-5%);
     cursor: pointer;
+}
+
+.nav--elementLog{
+    display: none;
+}
+
+.nav--profile,
+.admin--close{
+    border: 1px solid white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.nav--profile:hover,
+.admin--close:hover{
+    border: 1px solid var(--orange);
+    background-color: var(--orange);
+    color: var(--black);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#nav--usuario{
+    display: block;
+    font-weight: normal;
+    font-size: 0.8em;
+    margin-bottom: -5px;
+}
+
+#nav--perfil{
+    font-size: 0.9em;
 }

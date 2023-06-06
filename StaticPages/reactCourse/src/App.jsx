@@ -19,17 +19,17 @@ function App() {
     const [usuario,setUser]=useState("");
     const navigate=useNavigate()
     useEffect( () => {  
-     
+    
     axios.get("/api",{withCredentials: true})
       .then((response) => { 
-     setUser(response.data)
+    setUser(response.data)
       
     }) 
     if(usuario=="admin"){
       navigate("/OpAdmin")
     }
     if(usuario !="admin" && usuario != ""){
-      navigate("/PlaceInfo")
+      navigate("/")
     }
     
     
