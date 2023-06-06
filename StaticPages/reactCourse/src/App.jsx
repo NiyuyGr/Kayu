@@ -6,12 +6,13 @@ import PlaceInfo from './components/PlaceInfo'
 import CRUDU from './components/CRUDU';
 import CRUDL from './components/CRUDL'
 import OpAdmin from './components/OpAdmin';
-import UpdateU from './components/UpdateU';
 import CreateU from './components/CreateU';
-import ViewU from './components/ViewU'
+import CreateP from './components/CreateP';
+import ViewP from './components/ViewP';
+import axios from 'axios';
 import { Route, Routes ,useNavigate} from 'react-router-dom';
-import axios from 'axios'
 import { ProtectedRouteAdmin,ProtectedRouteUser } from './components/ProtectedRoute'
+
 function App() {
   
   //<Landing />
@@ -55,9 +56,9 @@ function App() {
         <Route path="/OpAdmin" element = {<OpAdmin />} />
         <Route path="/OpAdmin/CRUDU" element = {<CRUDU />} />
         <Route path="/OpAdmin/CRUDL" element = {<CRUDL />} />
-        <Route path="/OpAdmin/CRUDU/UpdateU/:nameUser" element = {<UpdateU />} />
         <Route path="/OpAdmin/CRUDU/CreateU" element = {<CreateU />} />
-        <Route path="/OpAdmin/CRUDU/ViewU/:nameUser" element = {<ViewU />} />
+        <Route path="/OpAdmin/CRUDL/CreateP" element = {<CreateP />} />
+        <Route path="/OpAdmin/CRUDL/ViewP/:idLugar" element = {<ViewP />} />
       </Route>
       {/*Rutas usuario reistrado*/}
     </Routes>
