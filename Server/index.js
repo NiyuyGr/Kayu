@@ -22,7 +22,7 @@ const db=mysql.createConnection({
     user: "root",
     password: "1234",
     database: "Kayu"
-})
+});
 
 app.use(session({
     secret: 'secret',
@@ -49,7 +49,7 @@ app.post('/api/Login',(req,res) => {
          return res.json({Login:false});
         }
     })
-})
+});
 
 app.post('/api/Register',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
@@ -58,7 +58,7 @@ app.post('/api/Register',(req,res) => {
         if(err)  return res.send("Error en Registrar usuario");
         else return res.send("Usuario registrado con exito");
     })
-})
+});
 
 app.post('/api/CreateU',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
@@ -67,7 +67,15 @@ app.post('/api/CreateU',(req,res) => {
         if(err)  return res.send("Error en Crear");
         else return res.send("Creado con exito");
     })
-})
+});
+app.post('/api/CreateP',(req,res) => {
+    const Create ="INSERT INTO lugar(Latitud,Longitud,Descripcion,Nombre,Imagenes) values(?,?,?,?,?);";
+    //(Modificar BD)
+    db.query(Create,[req.body.latitude,req.body.longitude,req.body.description,req.body.name,req.body.image],(err, data) => {
+        if(err)  return res.send("Error en Crear");
+        else return res.send("Creado con exito");
+    })
+});
 
 app.delete('/api/DeleteU/:userName',(req,res) =>{
     const Delete = "DELETE FROM usuario WHERE  NombreUsuario= ?";
@@ -75,8 +83,14 @@ app.delete('/api/DeleteU/:userName',(req,res) =>{
         if(err) res.json(" No se hizo ninguna eliminacion :(");
 
     })
-})
+});
+app.delete('/api/DeleteL/:idLugar',(req,res) =>{
+    const Delete = "DELETE FROM lugar WHERE  idLugar= ?";
+    db.query(Delete,req.params.idLugar,(err,data) =>{
+        if(err) res.json(" No se hizo ninguna eliminacion :(");
 
+    })
+})
 app.put('/api/UpdateU',(req,res) =>{
     const UPDATE = "UPDATE usuario  SET NombreUsuario = ?,PassUsuario= ?,Personalidad_idPersonalidad = ? WHERE NombreUsuario = ?";
     
@@ -91,7 +105,7 @@ app.put('/api/UpdateU',(req,res) =>{
        
     })
     
-})
+});
 
 app.get("/api/CrudG" ,(req,res) => {
     const getInfo="SELECT * FROM usuario";
@@ -100,11 +114,17 @@ app.get("/api/CrudG" ,(req,res) => {
         res.send(result);
     });
 });
-
-app.get("/api/GetId/:userName" ,(req,res) => {
-    const getId="SELECT * FROM usuario WHERE NombreUsuario = ?";
-   console.log(req.params.userName);
-    db.query(getId,req.params.userName,(err,result) => {
+app.get('/api/CrudL',(req,res)=>{
+    const getInfoL="SELECT * FROM lugar";
+    db.query(getInfoL,(err,result) => {
+        
+        res.send(result);
+    });
+});
+app.get("/api/GetId/:idLugar" ,(req,res) => {
+    const getId="SELECT * FROM lugar WHERE idLugar = ?";
+   console.log(req.params.idLugar);
+    db.query(getId,req.params.idLugar,(err,result) => {
         console.log(result);
         if(err) console.log("Error");
 
