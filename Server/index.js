@@ -106,7 +106,24 @@ app.put('/api/UpdateU',(req,res) =>{
     })
     
 });
+app.put('/api/UpdateP/:idLugar',(req,res) =>{
+    const UPDATE = "UPDATE lugar  SET Latitud = ?,Longitud= ?,Descripcion = ?,Nombre = ?,Imagenes = ? WHERE idLugar = ?";
 
+    console.log(req.params.idLugar);
+    console.log(req.body.newname);
+    console.log(req.body.newlatitude);
+    console.log(req.body.newlongitude);
+    console.log(req.body.newdescription);
+    console.log(req.body.newimage);
+    
+    db.query(UPDATE,[req.body.newlatitude,req.body.newlongitude,req.body.newdescription,req.body.newname,req.body.newimage,req.params.idLugar],(err,data) =>{
+        if(err) res.json("No se actualizaron datos");
+            
+        res.json("Dato actualizado :D");
+       
+    })
+    
+});
 app.get("/api/CrudG" ,(req,res) => {
     const getInfo="SELECT * FROM usuario";
     db.query(getInfo,(err,result) => {
@@ -135,7 +152,10 @@ app.get("/api/GetId/:idLugar" ,(req,res) => {
 app.get("/api",(req,res)=>{
         res.send(req.session.userid)
 });
-
+app.get("/api/Destroy",(req,res)=>{
+    req.session.destroy();
+    res.json("nmms se cerro la sesion wwe");
+})
 app.listen(3030,()=>{
     console.log(`Servidor escuchando desde 3030`);
 });

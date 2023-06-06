@@ -9,6 +9,7 @@ import OpAdmin from './components/OpAdmin';
 import CreateU from './components/CreateU';
 import CreateP from './components/CreateP';
 import ViewP from './components/ViewP';
+import UpdateP from './components/UpdateP'
 import axios from 'axios';
 import { Route, Routes ,useNavigate} from 'react-router-dom';
 import { ProtectedRouteAdmin,ProtectedRouteUser } from './components/ProtectedRoute'
@@ -59,6 +60,7 @@ function App() {
         <Route path="/OpAdmin/CRUDU/CreateU" element = {<CreateU />} />
         <Route path="/OpAdmin/CRUDL/CreateP" element = {<CreateP />} />
         <Route path="/OpAdmin/CRUDL/ViewP/:idLugar" element = {<ViewP />} />
+        <Route path="/OpAdmin/CRUDL/UpdateP/:idLugar" element = {<UpdateP />} />
       </Route>
       {/*Rutas usuario reistrado*/}
     </Routes>

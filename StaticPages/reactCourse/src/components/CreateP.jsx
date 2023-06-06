@@ -31,7 +31,7 @@ function CreateP() {
             
             <div>
                 <label htmlFor='description'>Descripcion</label>
-                <input type="password" placeholder='Ingrese Descripcion' onChange={e=>setDescription(e.target.value)}/>
+                <input type="text" placeholder='Ingrese Descripcion' onChange={e=>setDescription(e.target.value)}/>
             </div>
             
             <div>
