@@ -1,14 +1,20 @@
 import React,{useEffect, useState} from "react"
 import axios from "axios";
 import './Navbar.css'
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate, Link, useLocation } from "react-router-dom"
 
-export default function Navbar(){
+export default function Navbar({getData}){
     const  navigate=useNavigate();
     const [usuario,setUser]=useState("")
     let user = usuario
     if(usuario.length > 10){
       user = usuario.substring(0,10) + "..."
+    }
+    
+    const url = useLocation()
+
+    if(url.pathname == "/Profile"){
+      getData(usuario)
     }
     
     useEffect( () => {  

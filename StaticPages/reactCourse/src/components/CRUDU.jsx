@@ -98,24 +98,24 @@ function CRUDU(){
         const columns = [
                 {field: "NombreUsuario", 
                 headerName: "Nombre",
-                width: 180,
+                flex: 1,
                 editable: true },
                 {field: "PassUsuario",
-                width: 180,
+                flex: 1,
                 headerName: "Contraseña",
                 editable: true },
                 {
                 field: "Personalidad_idPersonalidad",
+                flex: 1,
                 headerName: "Personalidad",
                 type: "number",
-                width: 180,
                 editable: true
                 },
                 {
                 field: "actions",
                 type: "actions",
                 headerName: "Actions",
-                width: 100,
+                flex: 1,
                 cellClassName: "actions",
                 getActions: ({ id }) => {
                         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
@@ -198,7 +198,7 @@ function CRUDU(){
 return(
         <div className="general--container">
                 <Navbar />
-                <div className="crud">
+                <div className="crudU">
                         <div className="crud--datGrid">
                                 <DataGrid 
                                         editMode="row"
