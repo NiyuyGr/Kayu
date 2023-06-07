@@ -42,7 +42,7 @@ nav>h2 {
 .nav--element:hover,
 .nav--elementLog:hover,
 .nav--meet:hover {
-    transform: translateY(-5%);
+    transform: translateY(-15%);
     cursor: pointer;
 }
 

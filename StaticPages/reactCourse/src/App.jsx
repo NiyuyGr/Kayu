@@ -3,6 +3,7 @@ import Landing from './components/Landing'
 import Login from './components/Login'
 import Register from './components/Register'
 import PlaceInfo from './components/PlaceInfo'
+import Profile from './components/Profile'
 import CRUDU from './components/CRUDU';
 import CRUDL from './components/CRUDL'
 import OpAdmin from './components/OpAdmin';
@@ -50,6 +51,7 @@ function App() {
       <Route path="/" element = {<ProtectedRouteUser user={usuario} />} >
         <Route path="/Landing" element = {<Landing />} />
         <Route path="/PlaceInfo" element = {<PlaceInfo />} />
+        <Route path="/Profile" element = {<Profile />} />
       </Route>
       {/*Rutas admin*/}
       

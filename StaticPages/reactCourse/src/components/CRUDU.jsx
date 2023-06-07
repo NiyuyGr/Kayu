@@ -9,12 +9,13 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined"
 import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridRowModes } from '@mui/x-data-grid';
+import Navbar from "./Navbar";
 
 function EditToolbar(props) {
-        const { setRows, setRowModesModel, filas } = props
+        const { setRows, setRowModesModel, rowsLen}  = props
         const handleClick = () => { 
-                const id = filas.length
-                setRows(oldRows => [...oldRows, { NombreUsuario: "", PassUsuario: "", Personalidad_idPersonalidad: "", id, isNew: true }])
+                const id = rowsLen
+                setRows(oldRow => [...oldRow, { NombreUsuario: "", PassUsuario: "", Personalidad_idPersonalidad: "", id, isNew: true }])
                 setRowModesModel(oldModel => ({
                         ...oldModel,
                         [id]: { mode: GridRowModes.Edit, fieldToFocus: "NombreUsuario" }
@@ -31,11 +32,19 @@ function EditToolbar(props) {
 
 function CRUDU(){
         const navigate =useNavigate();
-        const [UserList,setUserList]=useState([]);
         const [rows,setRows] = useState([])
         const [rowModesModel, setRowModesModel] = useState({})
         const [oldUserName, setOldUserName] = useState("empty")
-        const [filLen, setFilLen] = useState(0)
+        const [create, setCreate] = useState(false)
+
+        function handleSubmit(name, password, personality){
+                console.log("nom : " +  name +  "pass : " + password + "per : " + personality)
+                axios.post('/api/CreateU', {name,password,personality})
+                .then(res => 
+                        console.log(res))
+                .catch(err => console.log(err));
+                        navigate('../OpAdmin/CRUDU')
+                }
 
         const handleRowEditStart = (params, event) => {
                 event.defaultMuiPrevented = true
@@ -47,16 +56,17 @@ function CRUDU(){
         
         const handleEditClick = id => () => {
                 //console.log("ID: " + id + " User: " + filas.find(a => a.id == id).NombreUsuario)
-                setOldUserName(filas.find(a => a.id == id).NombreUsuario)
+                setOldUserName(rows.find(a => a.id == id).NombreUsuario)
                 setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } })
         }
         
         const handleSaveClick = id => () => {
                 setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
+
         }
         
         const handleDeleteClick = id => () => {
-                deleteUser(filas.find(a => a.id == id).NombreUsuario)
+                deleteUser(rows.find(a => a.id == id).NombreUsuario)
                 setRows(rows.filter(row => row.id !== id))
         }
         
@@ -72,10 +82,12 @@ function CRUDU(){
         }
 
         const processRowUpdate = newRow => {
+                if (newRow.isNew) {
+                        handleSubmit(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
+                }
                 const updatedRow = { ...newRow, isNew: false }
                 updateUser(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
                 setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)))
-                console.log(updatedRow)
                 return updatedRow
         }
 
@@ -142,12 +154,18 @@ function CRUDU(){
                 }
         ]
 
+        var filas
+
         useEffect( () => {
                 axios.get('/api/CrudG/')
                 .then((response) => {
-                setUserList(response.data);
-        })  
-        },[UserList])
+                        filas = response.data
+                        filas.forEach((e,idx) => {
+                                Object.assign(e, {id: idx})
+                        })
+                        setRows(filas)
+        })
+        },[])
         const deleteUser =(userName) => {
                 axios.delete(`/api/DeleteU/${userName}`)          
         }
@@ -161,80 +179,44 @@ function CRUDU(){
         //if(newpersonality=="") newpersonality=pers;    
         axios.put("/api/UpdateU", {userName,pas,pers,oldUserName})
         .then(res => alert("Usuario modificado"))
-                setNewname("empty")
-                setNewpassword("empty")
-                setNewpersonality("")
         }
         
+        function handleSubmit(name, password, personality){
+        axios.post('/api/CreateU', {name,password,personality})
+        .then(res => 
+             console.log(res))
+        .catch(err => console.log(err));
+            navigate('../OpAdmin/CRUDU')
+        }
 
         const createUser =() => {
                 navigate('./CreateU');
         }
 
-        const filas = UserList
-        filas.forEach((element,index) => {
-                Object.assign(element, {id:index})
-        })
-
-        const numFilas = filas.length
+        const rowsLen = rows.length
 
 return(
-        <div>
-                <h1> Administración de Usuarios</h1>
-                <button onClick={() => {createUser()}}>Crear</button>
-                {UserList.map((val)=>{
-                return (
-                        <div key={val.NombreUsuario}>
-                                <table>
-                                        <tbody>
-                                <tr>    
-                                <td>
-                                        <input type="text"  defaultValue={val.NombreUsuario}  onChange={e=>
-                                        setNewname(e.target.value)
-                                        }/>   
-                                        </td>
-                                        <td>
-                                        <input type="text"  defaultValue={val.PassUsuario} onChange={e=>{
-                                        setNewpassword(e.target.value)
-                                        }}/>   
-                                        
-                                        
-                                        </td>
-                                        <td>
-                                        <input type="text"  defaultValue={val.Personalidad_idPersonalidad } onChange={e=>
-                                        setNewpersonality(e.target.value)} />   
-                                        </td>
-                                        <td>    
-                                        
-                                        <button onClick={() => {
-                                                updateUser(val.NombreUsuario,val.PassUsuario,val.Personalidad_idPersonalidad)
-                                                }}>Actualizar Datos</button>
-                                        <button onClick={() => {deleteUser(val.NombreUsuario)}}>Eliminar</button>
-                                        </td>
-                                </tr> 
-                                </tbody>
-                                </table>
+        <div className="general--container">
+                <Navbar />
+                <div className="crud">
+                        <div className="crud--datGrid">
+                                <DataGrid 
+                                        editMode="row"
+                                        rows={rows}
+                                        columns={columns}
+                                        rowModesModel={rowModesModel}
+                                        onRowModesModelChange={handleRowModesModelChange}
+                                        onRowEditStart={handleRowEditStart}
+                                        onRowEditStop={handleRowEditStop}
+                                        processRowUpdate={processRowUpdate}
+                                        slots={{
+                                                toolbar: EditToolbar
+                                        }}
+                                        slotProps={{
+                                                toolbar: { setRows, setRowModesModel, rowsLen}
+                                        }}
+                                />
                         </div>
-                )
-                }
-)}
-                <div style={{ height: 300, width: '80%' }}>
-                        <DataGrid 
-                                editMode="row"
-                                rows={filas}
-                                columns={columns}
-                                rowModesModel={rowModesModel}
-                                onRowModesModelChange={handleRowModesModelChange}
-                                onRowEditStart={handleRowEditStart}
-                                onRowEditStop={handleRowEditStop}
-                                processRowUpdate={processRowUpdate}
-                                slots={{
-                                        toolbar: EditToolbar
-                                }}
-                                slotProps={{
-                                        toolbar: { setRows, setRowModesModel, filas  }
-                                }}
-                        />
                 </div>
         </div>
         );
