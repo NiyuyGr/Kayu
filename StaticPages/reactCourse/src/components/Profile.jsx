@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React,{useEffect, useState} from "react"
 import './Profile.css'
 import Navbar from "./Navbar"
 import Footer from "./Footer"
@@ -10,10 +10,27 @@ export default function Profile(){
     const  navigate=useNavigate();
 
     const [userData, setUserData] = useState("");
+    const [user,setUser]=useState({NombreUsuario:"",
+                            PassUsuario: "",
+                            Personalidad_idPersonalidad: "",
+                            })
 
+            useEffect(()=>{
+             axios.get("/api/GetIdu",{withCredentials: true})
+             .then((res)=>{
+              console.log(res.data[0]);
+              setUser(res.data[0])
+                    
+                                })
+                                },[]);
+                                
+                                
     const getData = (dataNav) => {
         setUserData(dataNav)
     }
+    
+        
+        
 
     const destroyCookie = () =>{
         axios.get("/api/Destroy")
@@ -23,11 +40,15 @@ export default function Profile(){
 
     const updateUser = (event) => {
         event.preventDefault()
-        const name = event.target.user.value
-        const pass = event.target.pass.value
+        const  oldUserName = user.NombreUsuario
+        const userName = event.target.user.value
+
+        const pas = event.target.pass.value
+        
         const pers = event.target.pers.value
-        axios.put("/api/UpdateU", {name,pass,pers,userData})
-        .then(res => alert("Usuario modificado"))
+        
+        axios.put("/api/UpdateU", {userName,pas,pers,oldUserName})
+        .then(res => alert(res.data))
     }
 
     return(
@@ -39,15 +60,15 @@ export default function Profile(){
                         <form onSubmit={updateUser}>
                             <h2 className="login--title">¡Hola {userData}!</h2>
                             <div className="inputbox">
-                                <input type="text" name="user" defaultValue="test" required />
+                                <input type="text" name="user" defaultValue={user.NombreUsuario} required />
                                 <label htmlFor="">Usuario</label>
                             </div>
                             <div className="inputbox">
-                                <input type="password" name="pass" defaultValue="test" required/>
+                                <input type="password" name="pass" defaultValue={user.PassUsuario} required/>
                                 <label htmlFor="">Contraseña</label>
                             </div>
                             <div className="inputbox">
-                                <input type="text" name="pers" defaultValue="test" required/>
+                                <input type="text" name="pers" defaultValue={user.Personalidad_idPersonalidad} required/>
                                 <label htmlFor="">Personalidad</label>
                             </div>
                             <button className="formButton"><Save />Guardar</button>

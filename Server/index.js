@@ -148,6 +148,16 @@ app.get("/api/GetId/:idLugar" ,(req,res) => {
         res.send(result);
     });
 });
+app.get("/api/GetIdu" ,(req,res) => {
+    const getId="SELECT * FROM usuario WHERE NombreUsuario = ?";
+   
+    db.query(getId,req.session.userid,(err,result) => {
+        console.log(result);
+        if(err) console.log("Error");
+        res.send(result);
+    });
+});
+
 
 app.get("/api",(req,res)=>{
         res.send(req.session.userid)
