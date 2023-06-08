@@ -143,6 +143,16 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
+-- Data for table `kayu`.`lugar`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `kayu`;
+INSERT INTO `kayu`.`lugar` (`idLugar`, `Latitud`, `Longitud`, `Descripcion`, `Nombre`, `Imagenes`) VALUES (1, -10.213123, 20.123456, 'Efectivamente  los algoritmos geneticos son una herramienta poderosa', 'El sol', 'https://estaticos-cdn.sport.es/clip/d61683f7-d846-46cd-9234-9eb6eeb57bba_alta-libre-aspect-ratio_default_0.jpg');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `kayu`.`personalidad`
 -- -----------------------------------------------------
 START TRANSACTION;
@@ -168,11 +178,37 @@ COMMIT;
 
 
 -- -----------------------------------------------------
+-- Data for table `kayu`.`reseña`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `kayu`;
+INSERT INTO `kayu`.`reseña` (`idReseña`, `Puntuacion`, `Comentario`, `Lugar_idLugar`) VALUES (1, 3.5, '\"Buen lugar muy entretenido\"', 1);
+INSERT INTO `kayu`.`reseña` (`idReseña`, `Puntuacion`, `Comentario`, `Lugar_idLugar`) VALUES (2, 2, '\"Muy aburrido todo :(\"', 1);
+INSERT INTO `kayu`.`reseña` (`idReseña`, `Puntuacion`, `Comentario`, `Lugar_idLugar`) VALUES (3, 5, '\"El mejor lugar para ir si estas aburrido :D\"', 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
 -- Data for table `kayu`.`usuario`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `kayu`;
 INSERT INTO `kayu`.`usuario` (`NombreUsuario`, `PassUsuario`, `Personalidad_idPersonalidad`) VALUES ('admin', 'admin', 1);
+INSERT INTO `kayu`.`usuario` (`NombreUsuario`, `PassUsuario`, `Personalidad_idPersonalidad`) VALUES ('uva', 'uva', 16);
+INSERT INTO `kayu`.`usuario` (`NombreUsuario`, `PassUsuario`, `Personalidad_idPersonalidad`) VALUES ('usuario', 'usuario', 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `kayu`.`usuarioReseña`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `kayu`;
+INSERT INTO `kayu`.`usuarioReseña` (`Reseña_idReseña`, `Reseña_Lugar_idLugar`, `Usuario_NombreUsuario`) VALUES (1, 1, 'admin');
+INSERT INTO `kayu`.`usuarioReseña` (`Reseña_idReseña`, `Reseña_Lugar_idLugar`, `Usuario_NombreUsuario`) VALUES (2, 1, 'uva');
+INSERT INTO `kayu`.`usuarioReseña` (`Reseña_idReseña`, `Reseña_Lugar_idLugar`, `Usuario_NombreUsuario`) VALUES (3, 1, 'usuario');
 
 COMMIT;
 
