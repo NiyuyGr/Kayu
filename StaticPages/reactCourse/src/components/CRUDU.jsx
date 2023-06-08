@@ -35,7 +35,7 @@ function CRUDU(){
         const [rows,setRows] = useState([])
         const [rowModesModel, setRowModesModel] = useState({})
         const [oldUserName, setOldUserName] = useState("empty")
-        const [create, setCreate] = useState(false)
+        
 
         function handleSubmit(name, password, personality){
                 console.log("nom : " +  name +  "pass : " + password + "per : " + personality)
@@ -187,10 +187,6 @@ function CRUDU(){
              console.log(res))
         .catch(err => console.log(err));
             navigate('../OpAdmin/CRUDU')
-        }
-
-        const createUser =() => {
-                navigate('./CreateU');
         }
 
         const rowsLen = rows.length

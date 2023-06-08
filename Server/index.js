@@ -7,15 +7,17 @@ const cookieParser =require("cookie-parser");
 const app= express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(cors({
     origin: 'http://127.0.0.1:5173',
     methods: ["GET","POST","DELETE","PUT"],
     credentials: true,
 })
 );
-app.use(express.json());
-app.use(cookieParser());
 
+app.use(express.json());
+
+app.use(cookieParser());
 
 const db=mysql.createConnection({
     host: "localhost",
@@ -35,6 +37,7 @@ app.use(session({
         
     }
 }));
+
 app.post('/api/Login',(req,res) => {
 
     const sql ="SELECT * FROM usuario WHERE NombreUsuario = ? AND PassUsuario = ?;";
@@ -50,6 +53,11 @@ app.post('/api/Login',(req,res) => {
         }
     })
 });
+
+app.get("/api/Destroy",(req,res)=>{
+    req.session.destroy();
+    res.json("Sesion cerrada");
+})
 
 app.post('/api/Register',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
@@ -68,6 +76,7 @@ app.post('/api/CreateU',(req,res) => {
         else return res.send("Creado con exito");
     })
 });
+
 app.post('/api/CreateP',(req,res) => {
     const Create ="INSERT INTO lugar(Latitud,Longitud,Descripcion,Nombre,Imagenes) values(?,?,?,?,?);";
     //(Modificar BD)
@@ -84,6 +93,7 @@ app.delete('/api/DeleteU/:userName',(req,res) =>{
 
     })
 });
+
 app.delete('/api/DeleteL/:idLugar',(req,res) =>{
     const Delete = "DELETE FROM lugar WHERE  idLugar= ?";
     db.query(Delete,req.params.idLugar,(err,data) =>{
@@ -91,6 +101,7 @@ app.delete('/api/DeleteL/:idLugar',(req,res) =>{
 
     })
 })
+
 app.put('/api/UpdateU',(req,res) =>{
     const UPDATE = "UPDATE usuario  SET NombreUsuario = ?,PassUsuario= ?,Personalidad_idPersonalidad = ? WHERE NombreUsuario = ?";
     
@@ -106,6 +117,7 @@ app.put('/api/UpdateU',(req,res) =>{
     })
     
 });
+
 app.put('/api/UpdateP/:idLugar',(req,res) =>{
     const UPDATE = "UPDATE lugar  SET Latitud = ?,Longitud= ?,Descripcion = ?,Nombre = ?,Imagenes = ? WHERE idLugar = ?";
 
@@ -124,6 +136,7 @@ app.put('/api/UpdateP/:idLugar',(req,res) =>{
     })
     
 });
+
 app.get("/api/CrudG" ,(req,res) => {
     const getInfo="SELECT * FROM usuario";
     db.query(getInfo,(err,result) => {
@@ -131,6 +144,7 @@ app.get("/api/CrudG" ,(req,res) => {
         res.send(result);
     });
 });
+
 app.get('/api/CrudL',(req,res)=>{
     const getInfoL="SELECT * FROM lugar";
     db.query(getInfoL,(err,result) => {
@@ -138,6 +152,7 @@ app.get('/api/CrudL',(req,res)=>{
         res.send(result);
     });
 });
+
 app.get("/api/GetId/:idLugar" ,(req,res) => {
     const getId="SELECT * FROM lugar WHERE idLugar = ?";
    console.log(req.params.idLugar);
@@ -148,6 +163,7 @@ app.get("/api/GetId/:idLugar" ,(req,res) => {
         res.send(result);
     });
 });
+
 app.get("/api/GetIdu" ,(req,res) => {
     const getId="SELECT * FROM usuario WHERE NombreUsuario = ?";
    
@@ -158,14 +174,49 @@ app.get("/api/GetIdu" ,(req,res) => {
     });
 });
 
+app.post("/api/Reviews",(req,res)=>{
+    const reviews="SELECT usuario.NombreUsuario,reseña.Puntuacion,reseña.Comentario FROM usuario INNER JOIN usuarioreseña ON  usuario_NombreUsuario=NombreUsuario INNER JOIN lugar ON  idLugar=Reseña_Lugar_idLugar INNER JOIN reseña ON  idReseña=Reseña_idReseña WHERE idLugar= ?"
+    
+    db.query(reviews,req.body.idLugar,(err,result)=>{
+        
+        if(err) console.log("Error en la recuperacion de reseñas del lugar");
+        res.send(result);
+
+    });
+});
+
+app.post("/api/Review",(req,res)=>{
+    const review="INSERT INTO reseña (Puntuacion,Comentario,Lugar_idLugar) values (?,?,?)"
+    console.log(req.body.Puntuacion)
+    console.log(req.body.Comentario)
+    console.log(req.body.idLugar)
+    db.query(review,[req.body.Puntuacion,req.body.Comentario,req.body.idLugar],(err,result) => {
+        if(err) throw err
+        db.query("SELECT idReseña FROM reseña WHERE Puntuacion = ? && Comentario = ? && Lugar_idLugar= ?",[req.body.Puntuacion,req.body.Comentario,req.body.idLugar],(err,result)=>{
+            return res.send(result);
+        })
+
+    });
+});
+
+
+
+app.post("/api/SaveR",(req,res)=>{
+    const sreview="INSERT INTO usuarioreseña values(?,?,?)"
+    
+    db.query(sreview,[req.body.idReseña,req.body.idLugar,req.session.userid],(err,result)=>{
+        
+        if(err) console.log("Error en la recepcion de reseña del usuario");
+        res.send("Se recibio la reseña ;D");
+
+    })
+});
+
 
 app.get("/api",(req,res)=>{
         res.send(req.session.userid)
 });
-app.get("/api/Destroy",(req,res)=>{
-    req.session.destroy();
-    res.json("Sesion cerrada");
-})
+
 app.listen(3030,()=>{
     console.log(`Servidor escuchando desde 3030`);
 });

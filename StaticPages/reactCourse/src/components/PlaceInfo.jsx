@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Card from './Card'
@@ -7,11 +7,16 @@ import './PlaceInfo.css'
 import 'leaflet/dist/leaflet.css'
 import Rating from '@mui/material/Rating'
 import TextField from '@mui/material/TextField'
+import axios from "axios";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import { Icon } from 'leaflet'
+
+
 
 export default function PlaceInfo(props){
-    
+        const[ReviewList,setReviewList]=useState([]);
+        const[Puntuacion,setPuntuacion]=useState("");
+        const[Comentario,setComentario]=useState("");
+        const idLugar=1
     const testInfo = [
         {
             nombre: "Tangamandapio",
@@ -31,6 +36,31 @@ export default function PlaceInfo(props){
         }
     ]
 
+     useEffect(()=>{
+        //modificar a props
+        axios.post("/api/Reviews",{idLugar})
+        .then((res) => setReviewList(res.data) 
+            )},[])
+
+        const sendReview=()=> {
+            
+            axios.post("/api/Review",{Puntuacion,Comentario,idLugar})
+            .then((res)=>{
+                
+                    setPuntuacion("")
+                    setComentario("")
+                
+                var idReseña=res.data[0].idReseña
+                console.log(idReseña)
+                    axios.post("/api/SaveR",{idReseña,idLugar})
+                    .then((result)=>{
+                        console.log(result)
+                    })
+                
+                })
+            }
+
+        
     return(
         <div className="general--container">
             <Navbar />
@@ -45,16 +75,16 @@ export default function PlaceInfo(props){
                         <div className="place--containerR">
                             <h3>Puntuación de los usuarios</h3>
                             <div className="place--rating">
-                                <Rating name="test" defaultValue={2.5} precision={0.5} size="large" onChange={(e, value) => console.log(value)}/>
+                                <Rating name="test" defaultValue={2.5} precision={0.5} size="large" onChange={(e, value) =>{ setPuntuacion(e.target.value)
+                                    console.log(value)}}/>
                                 <span> [{testInfo[0].puntuacion}]</span>
                             </div>
                             <h3>Reseñas de los usuarios</h3>
                             <div className="reviews--container">
-                                <Review />
-                                <Review />
-                                <Review />
-                                <Review />
-                                <Review />
+                                {ReviewList.map((val) =>{
+                                   return <Review key={val.NombreUsuario} data={{Usuario:val.NombreUsuario,Puntuacion:val.Puntuacion,Comentario:val.Comentario}}/>  
+                                })}
+                                
                             </div>
                             <div className="campoTexto">
                                 <TextField
@@ -63,8 +93,9 @@ export default function PlaceInfo(props){
                                     fullWidth
                                     multiline
                                     rows={4}
+                                    onChange={e=>setComentario(e.target.value)}
                                 />
-                                <button className="btn-sendReview">Enviar</button>
+                                <button className="btn-sendReview" onClick={()=>sendReview()}>Enviar</button>
                             </div>
                             
                         </div>
