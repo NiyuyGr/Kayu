@@ -14,8 +14,11 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 export default function PlaceInfo(props){
         const[ReviewList,setReviewList]=useState([]);
-        const[Puntuacion,setPuntuacion]=useState("");
-        const[Comentario,setComentario]=useState("");
+        var[Puntuacion,setPuntuacion]=useState("");
+        var[Comentario,setComentario]=useState("");
+        const[valoracion,setValoracion]=useState("");
+                                         
+    
         const idLugar=1
     const testInfo = [
         {
@@ -40,10 +43,18 @@ export default function PlaceInfo(props){
         //modificar a props
         axios.post("/api/Reviews",{idLugar})
         .then((res) => setReviewList(res.data) 
-            )},[])
+            )
+            axios.post("/api/PuntuacionG",{idLugar})
+            .then((res) =>{
+                var val=((res.data[0].suma)/res.data[0].cuenta)
+                setValoracion(val.toFixed(2))
+                
+            })
+        },[ReviewList])
 
         const sendReview=()=> {
-            
+            if(Puntuacion =="") Puntuacion=3.5;
+            if(Comentario =="") Comentario="[Este usuario no dejo comentarios]";
             axios.post("/api/Review",{Puntuacion,Comentario,idLugar})
             .then((res)=>{
                 
@@ -51,15 +62,17 @@ export default function PlaceInfo(props){
                     setComentario("")
                 
                 var idReseña=res.data[0].idReseña
-                console.log(idReseña)
+                
+                    if(res.data=="Error"){
+                        console.log("No se pudo Subir la reseña")
+                    }
                     axios.post("/api/SaveR",{idReseña,idLugar})
                     .then((result)=>{
-                        console.log(result)
+                    
                     })
                 
                 })
             }
-
         
     return(
         <div className="general--container">
@@ -75,14 +88,15 @@ export default function PlaceInfo(props){
                         <div className="place--containerR">
                             <h3>Puntuación de los usuarios</h3>
                             <div className="place--rating">
-                                <Rating name="test" defaultValue={2.5} precision={0.5} size="large" onChange={(e, value) =>{ setPuntuacion(e.target.value)
+                                
+                                <Rating name="test" value={valoracion} precision={0.5} size="large" onChange={(e, value) =>{ setPuntuacion(e.target.value)
                                     console.log(value)}}/>
-                                <span> [{testInfo[0].puntuacion}]</span>
+                                <span> [{valoracion}]</span>
                             </div>
                             <h3>Reseñas de los usuarios</h3>
                             <div className="reviews--container">
                                 {ReviewList.map((val) =>{
-                                   return <Review key={val.NombreUsuario} data={{Usuario:val.NombreUsuario,Puntuacion:val.Puntuacion,Comentario:val.Comentario}}/>  
+                                   return <Review key={val.idReseña} data={{Usuario:val.NombreUsuario,Puntuacion:val.Puntuacion,Comentario:val.Comentario}}/>  
                                 })}
                                 
                             </div>

@@ -33,8 +33,7 @@ app.use(session({
     saveUninitialized: false,
     cookie:{
         secure:false,
-        maxAge: 1000*60*60*24,
-        
+        maxAge: 1000*60*60*24,        
     }
 }));
 
@@ -120,14 +119,6 @@ app.put('/api/UpdateU',(req,res) =>{
 
 app.put('/api/UpdateP/:idLugar',(req,res) =>{
     const UPDATE = "UPDATE lugar  SET Latitud = ?,Longitud= ?,Descripcion = ?,Nombre = ?,Imagenes = ? WHERE idLugar = ?";
-
-    console.log(req.params.idLugar);
-    console.log(req.body.newname);
-    console.log(req.body.newlatitude);
-    console.log(req.body.newlongitude);
-    console.log(req.body.newdescription);
-    console.log(req.body.newimage);
-    
     db.query(UPDATE,[req.body.newlatitude,req.body.newlongitude,req.body.newdescription,req.body.newname,req.body.newimage,req.params.idLugar],(err,data) =>{
         if(err) res.json("No se actualizaron datos");
             
@@ -168,14 +159,14 @@ app.get("/api/GetIdu" ,(req,res) => {
     const getId="SELECT * FROM usuario WHERE NombreUsuario = ?";
    
     db.query(getId,req.session.userid,(err,result) => {
-        console.log(result);
+       
         if(err) console.log("Error");
         res.send(result);
     });
 });
 
 app.post("/api/Reviews",(req,res)=>{
-    const reviews="SELECT usuario.NombreUsuario,reseña.Puntuacion,reseña.Comentario FROM usuario INNER JOIN usuarioreseña ON  usuario_NombreUsuario=NombreUsuario INNER JOIN lugar ON  idLugar=Reseña_Lugar_idLugar INNER JOIN reseña ON  idReseña=Reseña_idReseña WHERE idLugar= ?"
+    const reviews="SELECT usuario.NombreUsuario,reseña.Puntuacion,reseña.Comentario,reseña.idReseña FROM usuario INNER JOIN usuarioreseña ON  usuario_NombreUsuario=NombreUsuario INNER JOIN lugar ON  idLugar=Reseña_Lugar_idLugar INNER JOIN reseña ON  idReseña=Reseña_idReseña WHERE idLugar= ?"
     
     db.query(reviews,req.body.idLugar,(err,result)=>{
         
@@ -187,9 +178,6 @@ app.post("/api/Reviews",(req,res)=>{
 
 app.post("/api/Review",(req,res)=>{
     const review="INSERT INTO reseña (Puntuacion,Comentario,Lugar_idLugar) values (?,?,?)"
-    console.log(req.body.Puntuacion)
-    console.log(req.body.Comentario)
-    console.log(req.body.idLugar)
     db.query(review,[req.body.Puntuacion,req.body.Comentario,req.body.idLugar],(err,result) => {
         if(err) throw err
         db.query("SELECT idReseña FROM reseña WHERE Puntuacion = ? && Comentario = ? && Lugar_idLugar= ?",[req.body.Puntuacion,req.body.Comentario,req.body.idLugar],(err,result)=>{
@@ -199,14 +187,21 @@ app.post("/api/Review",(req,res)=>{
     });
 });
 
-
+app.post("/api/PuntuacionG",(req,res)=>{
+        const Puntuacion="SELECT count(Puntuacion) AS cuenta,sum(Puntuacion) AS suma FROM reseña WHERE Lugar_idLugar= ?"
+        db.query(Puntuacion,[req.body.idLugar],(err,result)=>{
+            if(err)  return console.log(err)
+            
+            return res.send(result)
+        })
+});
 
 app.post("/api/SaveR",(req,res)=>{
     const sreview="INSERT INTO usuarioreseña values(?,?,?)"
     
     db.query(sreview,[req.body.idReseña,req.body.idLugar,req.session.userid],(err,result)=>{
         
-        if(err) console.log("Error en la recepcion de reseña del usuario");
+        if(err) console.log("Error");
         res.send("Se recibio la reseña ;D");
 
     })
