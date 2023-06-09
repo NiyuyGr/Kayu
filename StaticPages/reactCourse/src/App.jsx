@@ -11,6 +11,7 @@ import CreateU from './components/CreateU';
 import CreateP from './components/CreateP';
 import ViewP from './components/ViewP';
 import UpdateP from './components/UpdateP'
+import Recommendations from './components/Recommendations'
 import axios from 'axios';
 import { Route, Routes ,useNavigate} from 'react-router-dom';
 import { ProtectedRouteAdmin,ProtectedRouteUser } from './components/ProtectedRoute'
@@ -51,6 +52,7 @@ function App() {
       <Route path="/" element = {<ProtectedRouteUser user={usuario} />} >
         <Route path="/Landing" element = {<Landing />} />
         <Route path="/PlaceInfo" element = {<PlaceInfo />} />
+        <Route path="/Recomendations" element = {<Recommendations />} />
         <Route path="/Profile" element = {<Profile />} />
       </Route>
       {/*Rutas admin*/}

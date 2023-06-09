@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Card from './Card'
@@ -8,18 +9,20 @@ import 'leaflet/dist/leaflet.css'
 import Rating from '@mui/material/Rating'
 import TextField from '@mui/material/TextField'
 import axios from "axios";
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMapEvent } from 'react-leaflet'
 
 
 
 export default function PlaceInfo(props){
-        const[ReviewList,setReviewList]=useState([]);
-        var[Puntuacion,setPuntuacion]=useState("");
-        var[Comentario,setComentario]=useState("");
-        const[valoracion,setValoracion]=useState("");
-                                         
-    
-        const idLugar=1
+    const[ReviewList,setReviewList]=useState([]);
+    var[Puntuacion,setPuntuacion]=useState("");
+    var[Comentario,setComentario]=useState("");
+    const[valoracion,setValoracion]=useState("");
+    const [infoPlace, setInfoPlace]=useState({})
+
+    const location = useLocation()
+    const idLugar = location.state.idLugar
+
     const testInfo = [
         {
             nombre: "Tangamandapio",
@@ -39,18 +42,23 @@ export default function PlaceInfo(props){
         }
     ]
 
-     useEffect(()=>{
+    useEffect(()=>{
         //modificar a props
-        axios.post("/api/Reviews",{idLugar})
-        .then((res) => setReviewList(res.data) 
-            )
+        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+            axios.post("/api/Reviews",{idLugar})
+            .then((res) => setReviewList(res.data) 
+                )
             axios.post("/api/PuntuacionG",{idLugar})
             .then((res) =>{
                 var val=((res.data[0].suma)/res.data[0].cuenta)
                 setValoracion(val.toFixed(2))
-                
             })
-        },[ReviewList])
+            axios.get("api/GetId/"+ idLugar)
+            .then((res) =>{
+                setInfoPlace(res.data[0])
+                console.log(res.data)
+            })
+    },[])
 
         const sendReview=()=> {
             if(Puntuacion =="") Puntuacion=3.5;
@@ -74,16 +82,23 @@ export default function PlaceInfo(props){
                 })
             }
         
+    function MyComponent() {
+            const map = useMapEvent('locationfound', () => {
+                map.setView([infoPlace.Latitud,infoPlace.Longitud], map.getZoom())
+            })
+            return null
+    }
+    
     return(
         <div className="general--container">
             <Navbar />
             <section   section className="placeInfo">
                 <div className="place--container">
-                    <h2>{testInfo[0].nombre}</h2>
+                    <h2>{infoPlace.Nombre}</h2>
                     <div className="place--conColumns">
                         <div className="place--containerL">
-                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80"/>
-                            <p className="place--desc">{testInfo[0].descripcion}</p>
+                            <img src={infoPlace.Imagenes}/>
+                            <p className="place--desc">{infoPlace.Descripcion}</p>
                         </div>
                         <div className="place--containerR">
                             <h3>Puntuación de los usuarios</h3>
@@ -95,9 +110,10 @@ export default function PlaceInfo(props){
                             </div>
                             <h3>Reseñas de los usuarios</h3>
                             <div className="reviews--container">
-                                {ReviewList.map((val) =>{
+                                { ReviewList != [] ? 
+                                ReviewList.map((val) =>{
                                    return <Review key={val.idReseña} data={{Usuario:val.NombreUsuario,Puntuacion:val.Puntuacion,Comentario:val.Comentario}}/>  
-                                })}
+                                }): <div></div>}
                                 
                             </div>
                             <div className="campoTexto">
@@ -119,7 +135,8 @@ export default function PlaceInfo(props){
                     <div>
                         <h2>UBICACIÓN</h2>
                     </div>
-                    <MapContainer center={[19.4326, -99.1332]} zoom={19}>
+                    <MapContainer center={[0,0]} zoom={19}>
+                        <MyComponent />
                         <TileLayer
                             attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"

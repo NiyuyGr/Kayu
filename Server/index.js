@@ -139,18 +139,16 @@ app.get("/api/CrudG" ,(req,res) => {
 app.get('/api/CrudL',(req,res)=>{
     const getInfoL="SELECT * FROM lugar";
     db.query(getInfoL,(err,result) => {
-        
         res.send(result);
     });
 });
 
 app.get("/api/GetId/:idLugar" ,(req,res) => {
     const getId="SELECT * FROM lugar WHERE idLugar = ?";
-   console.log(req.params.idLugar);
+     console.log(req.params.idLugar);
     db.query(getId,req.params.idLugar,(err,result) => {
         console.log(result);
         if(err) console.log("Error");
-
         res.send(result);
     });
 });
@@ -167,7 +165,7 @@ app.get("/api/GetIdu" ,(req,res) => {
 
 app.post("/api/Reviews",(req,res)=>{
     const reviews="SELECT usuario.NombreUsuario,reseña.Puntuacion,reseña.Comentario,reseña.idReseña FROM usuario INNER JOIN usuarioreseña ON  usuario_NombreUsuario=NombreUsuario INNER JOIN lugar ON  idLugar=Reseña_Lugar_idLugar INNER JOIN reseña ON  idReseña=Reseña_idReseña WHERE idLugar= ?"
-    
+    console.log("aqui",req.body.idLugar)
     db.query(reviews,req.body.idLugar,(err,result)=>{
         
         if(err) console.log("Error en la recuperacion de reseñas del lugar");
