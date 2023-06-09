@@ -21,7 +21,7 @@ export default function Recomendations(){
     const recomendationCards =  placeList.map(placeInfo =>{
         return(
             <Card
-                key = {placeInfo.id}
+                key = {placeInfo.idLugar}
                 {...placeInfo}
             />
         )

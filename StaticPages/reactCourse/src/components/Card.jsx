@@ -12,7 +12,7 @@ export default function Card(props){
     ]
 
     return(
-        <Link to="/PlaceInfo" state={{idLugar: props.idLugar}} class="card">
+        <Link to="/PlaceInfo" state={{idLugar: props.idLugar, latitud: props.Latitud, longitud: props.Longitud}} class="card">
             <img src={props.Imagenes} class="card-image" />
             <div class="category"> [Ubicacion del lugar] </div>
             <div class="heading"> {props.Nombre}

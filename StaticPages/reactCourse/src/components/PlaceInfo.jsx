@@ -21,7 +21,7 @@ export default function PlaceInfo(props){
     const [infoPlace, setInfoPlace]=useState({})
 
     const location = useLocation()
-    const idLugar = location.state.idLugar
+    const {idLugar, latitud, longitud} = location.state
 
     const testInfo = [
         {
@@ -33,8 +33,8 @@ export default function PlaceInfo(props){
 
     const markers = [
         {
-            geocode: [19.4326, -99.1332],
-            popUp : "Zócalo de la CDMX"
+            geocode: [latitud,longitud],
+            popUp : "Test"
         },
         {
             geocode: [19.434376193008248, -99.13308591837603],
@@ -83,8 +83,8 @@ export default function PlaceInfo(props){
             }
         
     function MyComponent() {
-            const map = useMapEvent('locationfound', () => {
-                map.setView([infoPlace.Latitud,infoPlace.Longitud], map.getZoom())
+            const map = useMapEvent('click', () => {
+                map.setView([latitud,longitud], map.getZoom())
             })
             return null
     }
@@ -135,7 +135,7 @@ export default function PlaceInfo(props){
                     <div>
                         <h2>UBICACIÓN</h2>
                     </div>
-                    <MapContainer center={[0,0]} zoom={19}>
+                    <MapContainer center={[latitud,longitud]} zoom={19}>
                         <MyComponent />
                         <TileLayer
                             attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
