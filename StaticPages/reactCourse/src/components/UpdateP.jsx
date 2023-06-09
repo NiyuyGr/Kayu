@@ -9,12 +9,14 @@ function UpdateP() {
                                         Descripcion:'',
                                         Latitud:'',
                                         Longitud:'',
-                                        Imagenes:''});
+                                        Imagenes:'',
+                                        categorias_idCategorias:''});
     var[newname,setNewname]=useState("");
     var[newdescription,setNewdescription]=useState("");
     var[newlatitude,setNewlatitude]=useState("");
     var[newlongitude,setNewlongitude]=useState("");
     var[newimage,setNewimage]=useState("");
+    var[newcategory,setNewcategory]=useState("");
     const navigate=useNavigate();
     
         
@@ -33,14 +35,16 @@ function UpdateP() {
         if(newlongitude=="") newlongitude=lugar.Longitud
         if(newdescription=="") newdescription=lugar.Descripcion
         if(newname=="") newname=lugar.Nombre
-        if(newimage=="") newimage=lugar.Imagenes    
-        axios.put(`/api/UpdateP/${idLugar}`,{newlatitude,newlongitude,newdescription,newname,newimage})
+        if(newimage=="") newimage=lugar.Imagenes 
+        if(newcategory=="") newcategory=lugar.categorias_idCategorias 
+        console.log(newcategory)  
+        axios.put(`/api/UpdateP/${idLugar}`,{newlatitude,newlongitude,newdescription,newname,newimage,newcategory})
         .then(res => navigate("../OpAdmin/CRUDL"))
 
         .catch(err => console.log(err));
 
         }
-        console.log(lugar.idLugar);
+        
     return (
 
     <div >
@@ -53,22 +57,25 @@ function UpdateP() {
                     
                     <div>
                         <label htmlFor='Description'>Descripción</label>
-                        <input type="text"  id="name" defaultValue={lugar.Descripcion} onChange={e=>setNewdescription(e.target.value)} />
+                        <input type="text"  id="desc" defaultValue={lugar.Descripcion} onChange={e=>setNewdescription(e.target.value)} />
                     </div>
                     
                     <div>
                         <label htmlFor='latitud'>Latitud</label>
-                        <input type="text"  id="name" defaultValue={lugar.Latitud} onChange={e=>setNewlatitude(e.target.value)} />
+                        <input type="text"  id="Lat" defaultValue={lugar.Latitud} onChange={e=>setNewlatitude(e.target.value)} />
                     </div>
                     
                     <div>
                         <label htmlFor='longitud'>Longitud</label>
-                        <input type="text"  id="name" defaultValue={lugar.Longitud} onChange={e=>setNewlongitude(e.target.value)} />
+                        <input type="text"  id="Lon" defaultValue={lugar.Longitud} onChange={e=>setNewlongitude(e.target.value)} />
                     </div>
-                    
+                    <div>
+                        <label htmlFor='categoria'>Categoria</label>
+                        <input type="text"  id="Cat" defaultValue={lugar.categorias_idCategorias} onChange={e=>setNewcategory(e.target.value)} />
+                    </div>
                     <div>
                         <label htmlFor='image'>Imagen</label>
-                        <input type="text"  id="name" defaultValue={lugar.Imagenes
+                        <input type="text"  id="Img" defaultValue={lugar.Imagenes
                         } onChange={e=>setNewimage(e.target.value)} />
                     </div>
                     

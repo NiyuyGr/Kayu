@@ -4,7 +4,7 @@ import Navbar from "./Navbar"
 import Footer from "./Footer"
 import Card from "./Card"
 import axios from "axios";
-import { useNavigate, Link, useLocation } from "react-router-dom"
+
 
 export default function Recomendations(){
     

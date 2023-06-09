@@ -6,9 +6,8 @@ import { useNavigate, Link } from "react-router-dom"
 export default function Card(props){
 
     const testEtiquetas = [
-        {nombre: "Parque"},
-        {nombre: "Museo"},
-        {nombre: "Galeria"}
+        {nombre:props.Tipo},
+        
     ]
 
     return(

@@ -58,7 +58,7 @@ export default function PlaceInfo(props){
                 setInfoPlace(res.data[0])
                 console.log(res.data)
             })
-    },[])
+    },[ReviewList])
 
         const sendReview=()=> {
             if(Puntuacion =="") Puntuacion=3.5;

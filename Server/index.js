@@ -77,9 +77,9 @@ app.post('/api/CreateU',(req,res) => {
 });
 
 app.post('/api/CreateP',(req,res) => {
-    const Create ="INSERT INTO lugar(Latitud,Longitud,Descripcion,Nombre,Imagenes) values(?,?,?,?,?);";
+    const Create ="INSERT INTO lugar(Latitud,Longitud,Descripcion,Nombre,Imagenes,categorias_idCategorias) values(?,?,?,?,?,?);";
     //(Modificar BD)
-    db.query(Create,[req.body.latitude,req.body.longitude,req.body.description,req.body.name,req.body.image],(err, data) => {
+    db.query(Create,[req.body.latitude,req.body.longitude,req.body.description,req.body.name,req.body.image,req.body.category],(err, data) => {
         if(err)  return res.send("Error en Crear");
         else return res.send("Creado con exito");
     })
@@ -118,8 +118,8 @@ app.put('/api/UpdateU',(req,res) =>{
 });
 
 app.put('/api/UpdateP/:idLugar',(req,res) =>{
-    const UPDATE = "UPDATE lugar  SET Latitud = ?,Longitud= ?,Descripcion = ?,Nombre = ?,Imagenes = ? WHERE idLugar = ?";
-    db.query(UPDATE,[req.body.newlatitude,req.body.newlongitude,req.body.newdescription,req.body.newname,req.body.newimage,req.params.idLugar],(err,data) =>{
+    const UPDATE = "UPDATE lugar  SET Latitud = ?,Longitud= ?,Descripcion = ?,Nombre = ?,Imagenes = ?,categorias_idCategorias=? WHERE idLugar = ?";
+    db.query(UPDATE,[req.body.newlatitude,req.body.newlongitude,req.body.newdescription,req.body.newname,req.body.newimage,req.body.newcategory,req.params.idLugar],(err,data) =>{
         if(err) res.json("No se actualizaron datos");
             
         res.json("Dato actualizado :D");
@@ -137,8 +137,9 @@ app.get("/api/CrudG" ,(req,res) => {
 });
 
 app.get('/api/CrudL',(req,res)=>{
-    const getInfoL="SELECT * FROM lugar";
+    const getInfoL="SELECT * FROM lugar INNER JOIN  categorias ON  categorias_idCategorias =idCategorias";
     db.query(getInfoL,(err,result) => {
+        
         res.send(result);
     });
 });

@@ -9,7 +9,8 @@ function ViewP() {
                                         Longitud:'',
                                         Descripcion:'',
                                         Nombre:'',
-                                        Imagenes:''}) 
+                                        Imagenes:'',
+                                        categorias_idCategorias:''}) 
     const navigate=useNavigate();
     
         
@@ -43,6 +44,10 @@ function ViewP() {
                     <div>
                     
                         <h1>Longitud: {lugar.Longitud}</h1>
+                    </div>
+                    <div>
+                    
+                        <h1>Categoria: {lugar.categorias_idCategorias}</h1>
                     </div>
                     <div>
                     

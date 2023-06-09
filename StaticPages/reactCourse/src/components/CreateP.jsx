@@ -8,11 +8,12 @@ function CreateP() {
     const[latitude,setLatitude]=useState('');
     const[longitude,setLongitude]=useState('');
     const[image,setImage]=useState('');
+    const[category,setCategory]=useState('');
     const navigate=useNavigate();
 
     function handleSubmit(event){
         event.preventDefault();
-        axios.post('/api/CreateP',{latitude,longitude,description,name,image})
+        axios.post('/api/CreateP',{latitude,longitude,description,name,image,category})
         .then(res => 
              console.log(res))
         .catch(err => console.log(err));
@@ -40,11 +41,15 @@ function CreateP() {
             </div>
             <div>
                 <label htmlFor='longitude'>Longitud</label>
-                <input type="text" placeholder='Ingrese Personalidad' onChange={e=>setLongitude(e.target.value)}/>
+                <input type="text" placeholder='Ingrese Longitud' onChange={e=>setLongitude(e.target.value)}/>
+            </div>
+            <div>
+                <label htmlFor='category'>Categoria</label>
+                <input type="text" placeholder='Ingrese Cattegoria' onChange={e=>setCategory(e.target.value)}/>
             </div>
             <div>
                 <label htmlFor='image'>Imagen</label>
-                <input type="text" placeholder='Ingrese Personalidad' onChange={e=>setImage(e.target.value)}/>
+                <input type="text" placeholder='Ingrese imagen' onChange={e=>setImage(e.target.value)}/>
             </div>
             <button>Crear</button>
             <button onClick={()=>{navigate('../OpAdmin/CRUDL')}}>Regresar</button>
