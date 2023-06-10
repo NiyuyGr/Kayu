@@ -43,8 +43,11 @@ export default function PlaceInfo(props){
     ]
 
     useEffect(()=>{
-        //modificar a props
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    },[location])
+
+    useEffect(()=>{
+        //modificar a props
             axios.post("/api/Reviews",{idLugar})
             .then((res) => setReviewList(res.data) 
                 )
@@ -58,7 +61,7 @@ export default function PlaceInfo(props){
                 setInfoPlace(res.data[0])
                 console.log(res.data)
             })
-    },[ReviewList])
+    },[])
 
         const sendReview=()=> {
             if(Puntuacion =="") Puntuacion=3.5;

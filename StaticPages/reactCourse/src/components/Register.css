@@ -132,3 +132,24 @@ input:valid ~ label{
 .register--personality p a:hover, .login p a:hover{
     text-decoration: underline;
 }
+
+.select--personality{
+    position: relative;
+    margin: 30px 0;
+}
+
+.select--personality select{
+    color: white;
+    font-size: 1em;
+    padding: 0 35px 0 5px;
+    height: 30px;
+    width: 310px;
+    background-color: transparent;
+    border: 0px solid white;
+    border-radius: 10px;
+    outline: 0px;
+}
+
+select option{
+    background-color:transparent;
+}

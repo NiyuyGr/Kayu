@@ -9,10 +9,13 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined"
 import SaveIcon from "@mui/icons-material/Save"
 import CancelIcon from "@mui/icons-material/Close"
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridRowModes } from '@mui/x-data-grid';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import Navbar from "./Navbar";
 
 function EditToolbar(props) {
         const { setRows, setRowModesModel, rowsLen}  = props
+        
         const handleClick = () => { 
                 const id = rowsLen
                 setRows(oldRow => [...oldRow, { NombreUsuario: "", PassUsuario: "", Personalidad_idPersonalidad: "", id, isNew: true }])
@@ -24,7 +27,7 @@ function EditToolbar(props) {
         return (
                 <GridToolbarContainer>
                 <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-                        Add record
+                        Añadir usuario
                 </Button>
                 </GridToolbarContainer>
         )
@@ -35,16 +38,16 @@ function CRUDU(){
         const [rows,setRows] = useState([])
         const [rowModesModel, setRowModesModel] = useState({})
         const [oldUserName, setOldUserName] = useState("empty")
+        const[open,setOpen]=useState({isOpen: false, type:'success', message:'none'});
         
 
         function handleSubmit(name, password, personality){
                 console.log("nom : " +  name +  "pass : " + password + "per : " + personality)
                 axios.post('/api/CreateU', {name,password,personality})
-                .then(res => 
-                        console.log(res))
-                .catch(err => console.log(err));
-                        navigate('../OpAdmin/CRUDU')
-                }
+                .then(res => {
+                        res.data ? setOpen({isOpen: true, type:'success', message:'Usuario creado con éxito'}) : setOpen({isOpen: true,type:'error', message:'Error en la creación de usuario'})
+                })
+        }
 
         const handleRowEditStart = (params, event) => {
                 event.defaultMuiPrevented = true
@@ -62,7 +65,6 @@ function CRUDU(){
         
         const handleSaveClick = id => () => {
                 setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } })
-
         }
         
         const handleDeleteClick = id => () => {
@@ -84,9 +86,10 @@ function CRUDU(){
         const processRowUpdate = newRow => {
                 if (newRow.isNew) {
                         handleSubmit(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
+                } else{
+                        updateUser(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
                 }
                 const updatedRow = { ...newRow, isNew: false }
-                updateUser(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
                 setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)))
                 return updatedRow
         }
@@ -166,8 +169,12 @@ function CRUDU(){
                         setRows(filas)
         })
         },[])
+
         const deleteUser =(userName) => {
-                axios.delete(`/api/DeleteU/${userName}`)          
+                axios.delete(`/api/DeleteU/${userName}`) 
+                .then(res =>{
+                        res.data ? setOpen({isOpen: true, type:'success', message:'Usuario eliminado con éxito'}) : setOpen({isOpen: true,type:'error', message:'No se ha logrado eliminar el usuario'})
+                })
         }
 
 
@@ -178,16 +185,19 @@ function CRUDU(){
         //if(newpassword=="empty")newpassword=pas;
         //if(newpersonality=="") newpersonality=pers;    
         axios.put("/api/UpdateU", {userName,pas,pers,oldUserName})
-        .then(res => alert("Usuario modificado"))
+        .then(res => {
+                res.data ? setOpen({isOpen: true, type:'success', message:'Usuario modificado con exito'}) : setOpen({isOpen: true,type:'error', message:'Error en la modificación del usuario'})
+        })
+        }
+
+        const handleClose = (e,reason) => {
+                open.success ? navigate('/Login') : null
+                setOpen({isOpen: false, type: 'success'});
         }
         
-        function handleSubmit(name, password, personality){
-        axios.post('/api/CreateU', {name,password,personality})
-        .then(res => 
-             console.log(res))
-        .catch(err => console.log(err));
-            navigate('../OpAdmin/CRUDU')
-        }
+        const Alert = React.forwardRef(function Alert(props, ref) {
+                return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+        })
 
         const rowsLen = rows.length
 
@@ -214,6 +224,11 @@ return(
                                 />
                         </div>
                 </div>
+                <Snackbar open={open.isOpen} autoHideDuration={5000} onClose={handleClose}> 
+                        <Alert onClose={handleClose} severity={open.type} sx={{ width: '100%' }}>
+                                {open.message}
+                        </Alert>
+                </Snackbar>
         </div>
         );
 }

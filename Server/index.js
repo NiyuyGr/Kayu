@@ -62,8 +62,8 @@ app.post('/api/Register',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
     //(Modificar BD)
     db.query(Create,[req.body.name,req.body.password,req.body.personality],(err, data) => {
-        if(err)  return res.send("Error en Registrar usuario");
-        else return res.send("Usuario registrado con exito");
+        if(err)  return res.send(false);
+        else return res.send(true);
     })
 });
 
@@ -71,8 +71,8 @@ app.post('/api/CreateU',(req,res) => {
     const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
     //(Modificar BD)
     db.query(Create,[req.body.name,req.body.password,req.body.personality],(err, data) => {
-        if(err)  return res.send("Error en Crear");
-        else return res.send("Creado con exito");
+        if(err)  return res.send(false);
+        else return res.send(true);
     })
 });
 
@@ -88,8 +88,8 @@ app.post('/api/CreateP',(req,res) => {
 app.delete('/api/DeleteU/:userName',(req,res) =>{
     const Delete = "DELETE FROM usuario WHERE  NombreUsuario= ?";
     db.query(Delete,req.params.userName,(err,data) =>{
-        if(err) res.json(" No se hizo ninguna eliminacion :(");
-
+        if(err) res.send(false);
+        else res.send(true);
     })
 });
 
@@ -109,9 +109,8 @@ app.put('/api/UpdateU',(req,res) =>{
     console.log(req.body.pers);
     console.log(req.body.oldUserName);
     db.query(UPDATE,[req.body.userName,req.body.pas,req.body.pers,req.body.oldUserName],(err,data) =>{
-        if(err) res.json("No se actualizaron datos");
-            
-        res.json("Dato actualizado :D");
+        if(err) res.send(false);
+        else res.send(true);
        
     })
     

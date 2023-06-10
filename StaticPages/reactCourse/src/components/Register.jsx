@@ -1,8 +1,11 @@
 import React,{useState} from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from './Navbar'
 import Footer from './Footer'
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import Select from 'react-select'
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import './Register.css'
 
 
@@ -10,17 +13,72 @@ export default function Register(){
     const navigate=useNavigate();
     const[name,setName]=useState('');
     const[password,setPassword]=useState('');
-    const[personality,setPersonality]=useState('');
+    const[currentPers,setCurrentPers]=useState({value:0, label:'none'});
+    const[personality,setPersonality]=useState();
+    const[open,setOpen]=useState({success: false, error: false});
+    
+    const options = [
+        { value: 1, label: 'INTJ' },
+        { value: 2, label: 'INTP' },
+        { value: 3 , label: 'ENTJ' },
+        { value: 4 , label: 'ENTP' },
+        { value: 5 , label: 'INFJ' },
+        { value: 6 , label: 'INFP' },
+        { value: 7 , label: 'ENFJ' },
+        { value: 8 , label: 'ENFP' },
+        { value: 9 , label: 'ISTJ' },
+        { value: 10 , label: 'ISFJ' },
+        { value: 11 , label: 'ESTJ' },
+        { value: 12 , label: 'ESFJ' },
+        { value: 13 , label: 'ISTP' },
+        { value: 14 , label: 'ISFP' },
+        { value: 15 , label: 'ESTP' },
+        { value: 16 , label: 'ESFP' },
+    ]
+
+    function handlePersonality(e){
+        console.log(e)
+        setPersonality(e.value)
+        setCurrentPers(e)
+    }
+
+    const Personality = () => (
+        <Select 
+            options={options}
+            id="test"
+            placeholder="Selecciona tu personalidad..."
+            onChange={handlePersonality}
+            value={currentPers.value!=0 ? currentPers: ''}
+            required = {true}
+            styles={{
+                control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    paddingLeft: '0',
+                    WebkitTextFillColor: 'white',
+                    border: '2px',
+                    backgroundColor: 'transparent',
+                }),
+            }}
+        />
+    )
 
     function handleSubmit(event){
         event.preventDefault();
         axios.post('/api/Register', {name,password,personality})
-        .then((res) => {alert(res.data) 
-            navigate('/Login')
+        .then((res) => {
+            res.data ? setOpen({success: true}): setOpen({error: true})
         })
-        .catch(err => console.log(err));
+    }
 
-        }
+    const handleClose = (e,reason) => {
+        open.success ? navigate('/Login') : 
+        setOpen({success: false, error: false});
+    }
+
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+    })
+
     return(
         <div className="general--container">
             <Navbar />
@@ -38,8 +96,7 @@ export default function Register(){
                                 <label htmlFor="">Contraseña</label>
                             </div>
                             <div className="inputbox">
-                                <input type="text" onChange={e=>setPersonality(e.target.value)} required />
-                                <label htmlFor="">Personalidad</label>
+                                <Personality />
                             </div>
                             <div className="register--personality">
                                 <p> ¡Conoce tu personalidad <a href="https://www.16personalities.com/es/test-de-personalidad" target="blank"> aquí!</a></p>
@@ -52,6 +109,16 @@ export default function Register(){
                     </div>
                 </div>
             </section>
+            <Snackbar open={open.success} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{vertical: 'top',horizontal: 'center'}}> 
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Usuario registrado con éxito
+                </Alert>
+            </Snackbar>
+            <Snackbar open={open.error} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{vertical: 'top',horizontal: 'center'}}> 
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                    Error en el registro de usuario
+                </Alert>
+            </Snackbar>
             <Footer />
         </div>
     )

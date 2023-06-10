@@ -5,10 +5,13 @@ import Footer from './Footer'
 import axios from 'axios'
 import './Login.css'
 import { useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 export default function Login(){
     const[user,setUser]=useState('');
     const[password,setPassword]=useState('');
+    const[open,setOpen]=useState({success: false, error: false});
     const navigate=useNavigate();
 
     
@@ -18,15 +21,24 @@ export default function Login(){
         .then(res =>{
             console.log(res);
             if(res.data.Login){
-                alert("Sesion iniciada con Exito")
-                location.reload(); 
+                setOpen({success: true})
             }else{
-                alert("Error en inicio de sesion")
+                setOpen({error:true})
             }
         } 
             )
         .catch(err => console.log(err));
         }
+
+        const handleClose = (e,reason) => {
+            open.success ? location.reload() : 
+            setOpen({success: false, error: false});
+        }
+
+        const Alert = React.forwardRef(function Alert(props, ref) {
+            return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
+        })
+
     return(
         <div className="general--container">
             <Navbar />
@@ -51,6 +63,16 @@ export default function Login(){
                     </div>
                 </div>
             </section>
+            <Snackbar open={open.success} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{vertical: 'top',horizontal: 'center'}}> 
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Sesion iniciada con éxito
+                </Alert>
+            </Snackbar>
+            <Snackbar open={open.error} autoHideDuration={2000} onClose={handleClose} anchorOrigin={{vertical: 'top',horizontal: 'center'}}> 
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                    Error en inicio de sesión
+                </Alert>
+            </Snackbar>
             <Footer />
         </div>
     )
