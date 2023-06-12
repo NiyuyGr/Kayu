@@ -24,6 +24,7 @@
     backdrop-filter: blur(15px);
     justify-content: center;
     align-items: center;
+    transition: .5s;
 }
 
 .register--title{
@@ -37,7 +38,6 @@
     margin: 30px 0;
     width: 310px;
     border-bottom: 2px solid white;
-
 }
 
 .inputbox label{
@@ -152,4 +152,56 @@ input:valid ~ label{
 
 select option{
     background-color:transparent;
+}
+
+.cognitive-functions-container{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cognitive-functions-container  p{
+    font-size: 0.8em;
+    color: white;
+    margin: -15px 0 15px 0;
+}
+
+.cognitive-functions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 20px 0 40px 0 ;
+    width: 310px;
+}
+
+.letters{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.letters input{
+    width: 70%;
+    height: 30px;
+    padding: 0 0 0 11px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: white;
+    border-bottom: 2px solid white;
+    text-align: center;
+}
+
+.letters label{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 1em;
+    pointer-events: none;
+    transition: .5s;
 }

@@ -13,8 +13,10 @@ export default function Register(){
     const navigate=useNavigate();
     const[name,setName]=useState('');
     const[password,setPassword]=useState('');
-    const[currentPers,setCurrentPers]=useState({value:0, label:'none'});
+    const[currentPers,setCurrentPers]=useState({value:0, label:'ABCD'});
     const[personality,setPersonality]=useState();
+    const[isBigger, setIsbigger] = useState(false);
+    const[cogValues, setCogValues] = useState({P:0,S:0,T:0,C:0})
     const[open,setOpen]=useState({success: false, error: false});
     
     const options = [
@@ -36,10 +38,18 @@ export default function Register(){
         { value: 16 , label: 'ESFP' },
     ]
 
+    var currPers = "ABCD"
+
     function handlePersonality(e){
         console.log(e)
         setPersonality(e.value)
         setCurrentPers(e)
+        document.getElementById("cognitiveF").style.display = "flex"
+        setIsbigger(true)
+    }
+
+    const biggerReg = {
+        height: '550px',
     }
 
     const Personality = () => (
@@ -64,7 +74,41 @@ export default function Register(){
 
     function handleSubmit(event){
         event.preventDefault();
-        axios.post('/api/Register', {name,password,personality})
+        console.log(cogValues)
+        let E,I,N,S,F,T,P,J
+        if(currentPers.label[0] == 'E'){
+            I = 100 - cogValues.P
+            E = cogValues.P
+        }else{
+            E = 100 - cogValues.P
+            I = cogValues.P
+        }
+        if(currentPers.label[1] == 'N'){
+            S = 100 - cogValues.S
+            N = cogValues.S
+        }else{
+            N = 100 - cogValues.S
+            S = cogValues.S
+        }
+        if(currentPers.label[2] == 'F'){
+            T = 100 - cogValues.T
+            F = cogValues.T
+        }else{
+            F = 100 - cogValues.T
+            T = cogValues.T
+        }
+        if(currentPers.label[3] == 'P'){
+            J = 100 - cogValues.C
+            P = cogValues.C
+        }else{
+            P = 100 - cogValues.C
+            J = cogValues.C
+        }
+        next(E,I,N,S,F,T,P,J)
+    }
+
+    function next(E,I,N,S,F,T,P,J){
+        axios.post('/api/Register', {name,password,personality,E,I,S,N,F,T,P,J})
         .then((res) => {
             res.data ? setOpen({success: true}): setOpen({error: true})
         })
@@ -83,7 +127,7 @@ export default function Register(){
         <div className="general--container">
             <Navbar />
             <section className="register--container">
-                <div className="register--box">
+                <div style={{height: isBigger ? '580px': ''}} className="register--box" id="register--box">
                     <div className="register--value">
                         <form onSubmit={handleSubmit}>
                             <h2 className="register--title">Registro</h2>
@@ -97,6 +141,27 @@ export default function Register(){
                             </div>
                             <div className="inputbox">
                                 <Personality />
+                            </div>
+                            <div className="cognitive-functions-container" id="cognitiveF">
+                                <p>Porcentajes de tus funciones cognitivas</p>
+                                <div className="cognitive-functions">
+                                    <div className="letters">
+                                        <input type="number" onChange={e=>setCogValues({P: e.target.value,S:cogValues.S,T:cogValues.T,C:cogValues.C})} required />
+                                        <label htmlFor="">{currentPers.label.charAt(0)}</label>
+                                    </div>
+                                    <div className="letters">
+                                        <input type="number" onChange={e=>setCogValues({P:cogValues.P,S: e.target.value,T:cogValues.T,C:cogValues.C})} required />
+                                        <label htmlFor="">{currentPers.label.charAt(1)}</label>
+                                    </div>
+                                    <div className="letters">
+                                        <input type="number" onChange={e=>setCogValues({P:cogValues.P,S:cogValues.S,T: e.target.value,C:cogValues.C})} required />
+                                        <label htmlFor="">{currentPers.label.charAt(2)}</label>
+                                    </div>
+                                    <div className="letters">
+                                        <input type="number" onChange={e=>setCogValues({P:cogValues.P,S:cogValues.S,T:cogValues.T,C: e.target.value})} required />
+                                        <label htmlFor="">{currentPers.label.charAt(3)}</label>
+                                    </div>
+                                </div>
                             </div>
                             <div className="register--personality">
                                 <p> ¡Conoce tu personalidad <a href="https://www.16personalities.com/es/test-de-personalidad" target="blank"> aquí!</a></p>

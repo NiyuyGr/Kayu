@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const session =require("express-session")
 const cookieParser =require("cookie-parser");
+const {spawn} = require("child_process");
 const app= express();
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -59,10 +60,13 @@ app.get("/api/Destroy",(req,res)=>{
 })
 
 app.post('/api/Register',(req,res) => {
-    const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
+    const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad,E,I,S,N,F,T,P,J) values(?,?,?,?,?,?,?,?,?,?,?);";
     //(Modificar BD)
-    db.query(Create,[req.body.name,req.body.password,req.body.personality],(err, data) => {
-        if(err)  return res.send(false);
+    const r = req.body
+    db.query(Create,[req.body.name,req.body.password,req.body.personality,r.E,r.I,r.S,r.N,r.F,r.T,r.P,r.J],(err, data) => {
+        if(err)  {
+            console.log(err)
+            return res.send(false);}
         else return res.send(true);
     })
 });
@@ -204,6 +208,28 @@ app.post("/api/SaveR",(req,res)=>{
 
     })
 });
+
+app.post("/api/getReco",(req,res)=>{
+    console.log(req.body)
+    const r = req.body.test
+    const py = spawn('python',['test.py', r.E,r.I,r.S,r.N,r.F,r.T,r.P,r.J])
+
+    py.stdout.on('data', (data) =>{
+        const recomendacion = data.toString().replace(/\s/g,'')
+        const reco1 = Number(recomendacion[0])+1
+        const reco2 = Number(recomendacion[1])+1
+        console.log(recomendacion[0],recomendacion[1])
+        const getInfoL="SELECT * FROM lugar INNER JOIN  categorias ON  categorias_idCategorias =idCategorias where idCategorias = ? or idCategorias = ?";
+        db.query(getInfoL,[reco1,reco2],(err,result) => {
+            if(err) console.log("Error");
+            else res.send(result);
+    });
+    })
+
+    py.on('close', (code)=>{
+        console.log(`child process exited with code ${code}`)
+    })
+})
 
 
 app.get("/api",(req,res)=>{

@@ -14,6 +14,7 @@ export default function Profile(){
     const [user,setUser]=useState({NombreUsuario:"",
                             PassUsuario: "",
                             Personalidad_idPersonalidad: "",
+                            E:0, I:0, S:0, N:0,F:0,T:0,P:0, J:0
                             })
 
     const[currentPers,setCurrentPers]=useState({value:0, label:'none'});
