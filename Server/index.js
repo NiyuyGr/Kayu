@@ -192,6 +192,8 @@ app.post("/api/Review",(req,res)=>{
 app.post("/api/PuntuacionG",(req,res)=>{
         const Puntuacion="SELECT count(Puntuacion) AS cuenta,sum(Puntuacion) AS suma FROM reseña WHERE Lugar_idLugar= ?"
         db.query(Puntuacion,[req.body.idLugar],(err,result)=>{
+            console.log(req.session.rec1)
+            console.log(req.session.rec2)
             if(err)  return console.log(err)
             
             return res.send(result)
@@ -211,25 +213,42 @@ app.post("/api/SaveR",(req,res)=>{
 
 app.post("/api/getReco",(req,res)=>{
     console.log(req.body)
-    const r = req.body.test
-    const py = spawn('python',['test.py', r.E,r.I,r.S,r.N,r.F,r.T,r.P,r.J])
-
-    py.stdout.on('data', (data) =>{
-        const recomendacion = data.toString().replace(/\s/g,'')
-        const reco1 = Number(recomendacion[0])+1
-        const reco2 = Number(recomendacion[1])+1
-        console.log(recomendacion[0],recomendacion[1])
+    if(typeof req.session.rec1 !="undefined" || typeof req.session.rec2 !="undefined"){
         const getInfoL="SELECT * FROM lugar INNER JOIN  categorias ON  categorias_idCategorias =idCategorias where idCategorias = ? or idCategorias = ?";
-        db.query(getInfoL,[reco1,reco2],(err,result) => {
+        db.query(getInfoL,[req.session.rec1,req.session.rec2],(err,result) => {
+           
             if(err) console.log("Error");
             else res.send(result);
-    });
-    })
-
-    py.on('close', (code)=>{
-        console.log(`child process exited with code ${code}`)
-    })
-})
+        
+        });
+    }else{
+        const r = req.body.test
+        const py = spawn('python',['test.py', r.E,r.I,r.S,r.N,r.F,r.T,r.P,r.J])
+       
+        py.stdout.on('data', (data) =>{
+            const recomendacion = data.toString().replace(/\s/g,'')
+            const reco1 = Number(recomendacion[0])+1
+            const reco2 = Number(recomendacion[1])+1
+            console.log(recomendacion[0],recomendacion[1])
+            const getInfoL="SELECT * FROM lugar INNER JOIN  categorias ON  categorias_idCategorias =idCategorias where idCategorias = ? or idCategorias = ?";
+            db.query(getInfoL,[reco1,reco2],(err,result) => {
+                req.session.rec1=reco1
+                req.session.rec2=reco2
+                console.log(req.session.rec2)
+                console.log(req.session.rec1)
+                if(err) console.log("Error");
+                else res.send(result);
+            
+        });
+    
+        
+        })
+    
+        py.on('close', (code)=>{
+            console.log(`child process exited with code ${code}`)
+        }) 
+    }
+});
 
 
 app.get("/api",(req,res)=>{
