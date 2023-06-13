@@ -18,7 +18,7 @@ function EditToolbar(props) {
         
         const handleClick = () => { 
                 const id = rowsLen
-                setRows(oldRow => [...oldRow, { NombreUsuario: "", PassUsuario: "", Personalidad_idPersonalidad: "", id, isNew: true }])
+                setRows(oldRow => [...oldRow, { NombreUsuario: "", PassUsuario: "", Personalidad_idPersonalidad: "",E: "",I: "",S: "",N: "",F: "",T: "",P: "",J: "", id, isNew: true }])
                 setRowModesModel(oldModel => ({
                         ...oldModel,
                         [id]: { mode: GridRowModes.Edit, fieldToFocus: "NombreUsuario" }
@@ -41,9 +41,9 @@ function CRUDU(){
         const[open,setOpen]=useState({isOpen: false, type:'success', message:'none'});
         
 
-        function handleSubmit(name, password, personality){
-                console.log("nom : " +  name +  "pass : " + password + "per : " + personality)
-                axios.post('/api/CreateU', {name,password,personality})
+        function handleSubmit(name, password, personality,e,i,s,n,f,t,p,j){
+                console.log("nom : " +  name +  "pass : " + password + "per : " + personality+"e :"+e+"i :"+i+"s :"+s+"n :"+n+"f :"+f+"t :"+t+"p :"+p+"j :"+j)
+                axios.post('/api/CreateU', {name,password,personality,e,i,s,n,f,t,p,j})
                 .then(res => {
                         res.data ? setOpen({isOpen: true, type:'success', message:'Usuario creado con éxito'}) : setOpen({isOpen: true,type:'error', message:'Error en la creación de usuario'})
                 })
@@ -85,9 +85,9 @@ function CRUDU(){
 
         const processRowUpdate = newRow => {
                 if (newRow.isNew) {
-                        handleSubmit(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
+                        handleSubmit(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad, newRow.E, newRow.I, newRow.S, newRow.N, newRow.F, newRow.T, newRow.P, newRow.J)
                 } else{
-                        updateUser(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad)
+                        updateUser(newRow.NombreUsuario, newRow.PassUsuario, newRow.Personalidad_idPersonalidad, newRow.E, newRow.I, newRow.S, newRow.N, newRow.F, newRow.T, newRow.P, newRow.J)
                 }
                 const updatedRow = { ...newRow, isNew: false }
                 setRows(rows.map(row => (row.id === newRow.id ? updatedRow : row)))
@@ -115,11 +115,68 @@ function CRUDU(){
                 editable: true
                 },
                 {
+                field: "E",
+                flex: 1,
+                headerName: "E",
+                type: "number",
+                editable: true
+                },
+                {
+                field: "I",
+                flex: 1,
+                headerName: "I",
+                type: "number",
+                editable: true
+                },
+                {
+                field: "S",
+                flex: 1,
+                headerName: "S",
+                type: "number",
+                editable: true
+                },
+                {
+                field: "N",
+                flex: 1,
+                headerName: "N",
+                type: "number",
+                editable: true
+                },
+                {
+                field: "F",
+                flex: 1,
+                headerName: "F",
+                type: "number",
+                editable: true
+                },
+                {
+                field: "T",
+                flex: 1,
+                headerName: "T",
+                type: "number",
+                editable: true
+                },
+                {
+                field: "P",
+                flex: 1,
+                headerName: "P",
+                type: "number",
+                editable: true
+                },
+                {
+                field: "J",
+                flex: 1,
+                headerName: "J",
+                type: "number",
+                editable: true
+                },
+                {
                 field: "actions",
                 type: "actions",
                 headerName: "Actions",
                 flex: 1,
                 cellClassName: "actions",
+                
                 getActions: ({ id }) => {
                         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit
                         if (isInEditMode) {
@@ -178,13 +235,13 @@ function CRUDU(){
         }
 
 
-        const updateUser = (userName,pas,pers) => {
+        const updateUser = (userName,pas,pers,e,i,s,n,f,t,p,j) => {
         console.log("Newname " + userName)
         console.log("Oldname " + oldUserName)
         //if(newname=="empty") newname=userName;
         //if(newpassword=="empty")newpassword=pas;
         //if(newpersonality=="") newpersonality=pers;    
-        axios.put("/api/UpdateU", {userName,pas,pers,oldUserName})
+        axios.put("/api/UpdateU", {userName,pas,pers,e,i,s,n,f,t,p,j,oldUserName})
         .then(res => {
                 res.data ? setOpen({isOpen: true, type:'success', message:'Usuario modificado con exito'}) : setOpen({isOpen: true,type:'error', message:'Error en la modificación del usuario'})
         })

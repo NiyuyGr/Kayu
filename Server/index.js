@@ -72,9 +72,9 @@ app.post('/api/Register',(req,res) => {
 });
 
 app.post('/api/CreateU',(req,res) => {
-    const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad) values(?,?,?);";
+    const Create ="INSERT INTO usuario(NombreUsuario,PassUsuario,Personalidad_idPersonalidad,E,I,S,N,F,T,P,J) values(?,?,?,?,?,?,?,?,?,?,?);";
     //(Modificar BD)
-    db.query(Create,[req.body.name,req.body.password,req.body.personality],(err, data) => {
+    db.query(Create,[req.body.name,req.body.password,req.body.personality,req.body.e,req.body.i,req.body.s,req.body.n,req.body.f,req.body.t,req.body.p,req.body.j],(err, data) => {
         if(err)  return res.send(false);
         else return res.send(true);
     })
@@ -106,13 +106,22 @@ app.delete('/api/DeleteL/:idLugar',(req,res) =>{
 })
 
 app.put('/api/UpdateU',(req,res) =>{
-    const UPDATE = "UPDATE usuario  SET NombreUsuario = ?,PassUsuario= ?,Personalidad_idPersonalidad = ? WHERE NombreUsuario = ?";
+    const UPDATE = "UPDATE usuario  SET NombreUsuario = ?,PassUsuario= ?,Personalidad_idPersonalidad = ?,E=?,I=?,S=?,N=?,F=?,T=?,P=?,J=? WHERE NombreUsuario = ?";
     
     console.log(req.body.userName);
     console.log(req.body.pas);
     console.log(req.body.pers);
     console.log(req.body.oldUserName);
-    db.query(UPDATE,[req.body.userName,req.body.pas,req.body.pers,req.body.oldUserName],(err,data) =>{
+    console.log(req.body.e)
+    console.log(req.body.i)
+    console.log(req.body.s)
+    console.log(req.body.n)
+    console.log(req.body.f)
+    console.log(req.body.t)
+    console.log(req.body.p)
+    console.log(req.body.j)
+
+    db.query(UPDATE,[req.body.userName,req.body.pas,req.body.pers,req.body.e,req.body.i,req.body.s,req.body.n,req.body.f,req.body.t,req.body.p,req.body.j,req.body.oldUserName],(err,data) =>{
         if(err) res.send(false);
         else res.send(true);
        
@@ -237,11 +246,8 @@ app.post("/api/getReco",(req,res)=>{
                 console.log(req.session.rec2)
                 console.log(req.session.rec1)
                 if(err) console.log("Error");
-                else res.send(result);
-            
-        });
-    
-        
+                else res.send(result); 
+        });    
         })
     
         py.on('close', (code)=>{
