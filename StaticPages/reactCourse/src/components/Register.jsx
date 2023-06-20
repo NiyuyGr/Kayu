@@ -38,8 +38,6 @@ export default function Register(){
         { value: 16 , label: 'ESFP' },
     ]
 
-    var currPers = "ABCD"
-
     function handlePersonality(e){
         console.log(e)
         setPersonality(e.value)
