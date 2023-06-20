@@ -260,6 +260,14 @@ app.get("/api",(req,res)=>{
         res.send(req.session.userid)
 });
 
+app.get("/api/Get3p",(req,res)=>{
+    const places="Select * from lugar INNER JOIN categorias ON categorias_idCategorias=idCategorias ORDER BY floor (1+(rand()*(select count(idLugar) from lugar))) Limit 3;"
+    db.query(places,(err,result)=>{
+        if(err) console.log("No se recibieron los lugares");
+        res.send(result);
+    })
+});
+
 app.listen(3030,()=>{
     console.log(`Servidor escuchando desde 3030`);
 });
