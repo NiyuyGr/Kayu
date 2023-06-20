@@ -19,6 +19,7 @@ export default function PlaceInfo(props){
     var[Comentario,setComentario]=useState("");
     const[valoracion,setValoracion]=useState("");
     const [infoPlace, setInfoPlace]=useState({})
+    const [placeList,setPlaceList]=useState([]);
 
     const location = useLocation()
     const {idLugar, latitud, longitud} = location.state
@@ -61,7 +62,11 @@ export default function PlaceInfo(props){
                 setInfoPlace(res.data[0])
                 console.log(res.data)
             })
-    },[])
+            axios.get("/api/Get3P").then((res)=>{
+                setPlaceList(res.data);
+                console.log(res.data)
+            })
+    },[idLugar,Comentario])
 
         const sendReview=()=> {
             if(Puntuacion =="") Puntuacion=3.5;
@@ -157,9 +162,11 @@ export default function PlaceInfo(props){
                         ¡Descubre otros lugares que coinciden con tu personalidad!  
                     </h1>
                     <section className='cards'>
-                        <Card />
-                        <Card />
-                        <Card />
+                        {
+                            placeList.map(PlaceInfo=>{
+                                return(<Card key={PlaceInfo.idLugar}{...PlaceInfo}/>)
+                            })
+                        }
                     </section>
                 </section>
             </section>

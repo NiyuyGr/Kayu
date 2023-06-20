@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 import Card from './Card'
@@ -6,7 +6,13 @@ import axios from 'axios'
 import './Landing.css'
 
 function Landing() {
-    
+    const[placeList,setPlaceList]=useState([]);
+    useEffect(()=>{
+        axios.get("api/Get3P").then((res)=>{
+            setPlaceList(res.data);
+            console.log(res.data)
+        })
+    },[])
     return (
         <div className='general--container'>
             <Navbar />
@@ -28,9 +34,11 @@ function Landing() {
                 </h1>
             </section>
             <section className='cards'>
-                <Card />
-                <Card />
-                <Card />
+                {
+                    placeList.map(PlaceInfo=>{
+                        return(<Card key={PlaceInfo.idLugar}{...PlaceInfo}/>)
+                    })
+                }
             </section>
             <Footer />
         </div>
