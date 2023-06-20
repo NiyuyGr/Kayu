@@ -84,8 +84,8 @@ app.post('/api/CreateP',(req,res) => {
     const Create ="INSERT INTO lugar(Latitud,Longitud,Descripcion,Nombre,Imagenes,categorias_idCategorias) values(?,?,?,?,?,?);";
     //(Modificar BD)
     db.query(Create,[req.body.latitude,req.body.longitude,req.body.description,req.body.name,req.body.image,req.body.category],(err, data) => {
-        if(err)  return res.send("Error en Crear");
-        else return res.send("Creado con exito");
+        if(err)  return res.send(false);
+        else return res.send(true);
     })
 });
 
@@ -100,8 +100,8 @@ app.delete('/api/DeleteU/:userName',(req,res) =>{
 app.delete('/api/DeleteL/:idLugar',(req,res) =>{
     const Delete = "DELETE FROM lugar WHERE  idLugar= ?";
     db.query(Delete,req.params.idLugar,(err,data) =>{
-        if(err) res.json(" No se hizo ninguna eliminacion :(");
-
+        if(err) res.send(false);
+        else res.send(true);
     })
 })
 
@@ -151,7 +151,6 @@ app.get("/api/CrudG" ,(req,res) => {
 app.get('/api/CrudL',(req,res)=>{
     const getInfoL="SELECT * FROM lugar INNER JOIN  categorias ON  categorias_idCategorias =idCategorias";
     db.query(getInfoL,(err,result) => {
-        
         res.send(result);
     });
 });
