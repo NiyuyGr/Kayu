@@ -1,6 +1,6 @@
 import React,{useEffect, useState} from "react"
 import axios from "axios";
-import './Navbar.css'
+import './css/Navbar.css'
 import { useNavigate, Link, useLocation } from "react-router-dom"
 
 export default function Navbar({getData}){

@@ -1,5 +1,5 @@
 import React from "react"
-import './Review.css'
+import './css/Review.css'
 import Rating from '@mui/material/Rating'
 export default function Review(props) {
             //Dondende props va a ser id del lugar

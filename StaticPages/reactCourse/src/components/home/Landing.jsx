@@ -1,9 +1,9 @@
 import React,{useEffect,useState} from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import Card from './Card'
+import Card from '../places/Card'
 import axios from 'axios'
-import './Landing.css'
+import './css/Landing.css'
 
 function Landing() {
     const[placeList,setPlaceList]=useState([]);

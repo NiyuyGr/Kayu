@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from "react";
-import './CRUDU.css'
+import './css/CRUDU.css'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button"
@@ -11,7 +11,7 @@ import CancelIcon from "@mui/icons-material/Close"
 import { DataGrid, GridActionsCellItem, GridToolbarContainer, GridRowModes } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import Navbar from "./Navbar";
+import Navbar from "../home/Navbar";
 
 function EditToolbar(props) {
         const { setRows, setRowModesModel, rowsLen}  = props

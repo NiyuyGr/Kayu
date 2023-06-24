@@ -1,5 +1,5 @@
 import React from "react";
-import './Card.css'
+import './css/Card.css'
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom"
 

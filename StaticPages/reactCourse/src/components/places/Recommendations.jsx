@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from "react"
-import './Recommendations.css'
-import Navbar from "./Navbar"
-import Footer from "./Footer"
+import './css/Recommendations.css'
+import Navbar from "../home/Navbar"
+import Footer from "../home/Footer"
 import Card from "./Card"
 import axios from "axios";
 

@@ -15,7 +15,7 @@ function CreateP() {
         event.preventDefault();
         axios.post('/api/CreateP',{latitude,longitude,description,name,image,category})
         .then(res => 
-             console.log(res))
+            console.log(res))
         .catch(err => console.log(err));
             navigate('../OpAdmin/CRUDL')
         }

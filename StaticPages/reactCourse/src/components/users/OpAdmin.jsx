@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import Navbar from './Navbar'
-import Footer from './Footer'
-import './OpAdmin.css'
+import Navbar from '../home/Navbar'
+import Footer from '../home/Footer'
+import './css/OpAdmin.css'
 
 
 function OpAdmin() {

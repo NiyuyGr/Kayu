@@ -1,10 +1,10 @@
 import React,{useState,useEffect} from "react";
 import { useLocation } from "react-router-dom";
-import Navbar from './Navbar'
-import Footer from './Footer'
+import Navbar from '../home/Navbar'
+import Footer from '../home/Footer'
 import Card from './Card'
 import Review from './Review'
-import './PlaceInfo.css'
+import './css/PlaceInfo.css'
 import 'leaflet/dist/leaflet.css'
 import Rating from '@mui/material/Rating'
 import TextField from '@mui/material/TextField'

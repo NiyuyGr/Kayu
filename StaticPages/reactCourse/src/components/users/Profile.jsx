@@ -1,24 +1,30 @@
-import React,{useState} from "react";
-import { useNavigate } from "react-router-dom";
-import Navbar from './Navbar'
-import Footer from './Footer'
+import React,{useEffect, useState} from "react"
+import './css/Profile.css'
+import './css/Register.css'
+import Navbar from "../home/Navbar"
+import Footer from "../home/Footer"
 import axios from "axios";
-import Select from 'react-select'
+import { useNavigate, Link } from "react-router-dom"
+import Save from '@mui/icons-material/SaveOutlined';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import './Register.css'
+import Select from "react-select";
 
+export default function Profile(){
+    const  navigate=useNavigate();
 
-export default function Register(){
-    const navigate=useNavigate();
-    const[name,setName]=useState('');
-    const[password,setPassword]=useState('');
+    const [userData, setUserData] = useState("");
+    const [user,setUser]=useState({NombreUsuario:"",
+                            PassUsuario: "",
+                            Personalidad_idPersonalidad: "",
+                            E:0, I:0, S:0, N:0,F:0,T:0,P:0, J:0
+                            })
+
     const[currentPers,setCurrentPers]=useState({value:0, label:'ABCD'});
     const[personality,setPersonality]=useState();
-    const[isBigger, setIsbigger] = useState(false);
     const[cogValues, setCogValues] = useState({P:0,S:0,T:0,C:0})
     const[open,setOpen]=useState({success: false, error: false});
-    
+
     const options = [
         { value: 1, label: 'INTJ' },
         { value: 2, label: 'INTP' },
@@ -40,24 +46,19 @@ export default function Register(){
 
     function handlePersonality(e){
         console.log(e)
-        setPersonality(e.value)
         setCurrentPers(e)
-        document.getElementById("cognitiveF").style.display = "flex"
-        setIsbigger(true)
+        setPersonality(e.value)
     }
 
-    const biggerReg = {
-        height: '550px',
-    }
+    const initialPersonality = options.find(option => option.value == user.Personalidad_idPersonalidad)
 
     const Personality = () => (
         <Select 
             options={options}
-            id="test"
             placeholder="Selecciona tu personalidad..."
             onChange={handlePersonality}
-            value={currentPers.value!=0 ? currentPers: ''}
-            required = {true}
+            value={currentPers.value!=0 ? currentPers: initialPersonality}
+            required
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -69,6 +70,16 @@ export default function Register(){
             }}
         />
     )
+
+    const getData = (dataNav) => {
+        setUserData(dataNav)
+    }
+
+    const destroyCookie = () =>{
+        axios.get("/api/Destroy")
+        .then((response) =>
+        navigate("/") )
+    }
 
     function handleSubmit(event){
         event.preventDefault();
@@ -102,18 +113,29 @@ export default function Register(){
             P = 100 - cogValues.C
             J = cogValues.C
         }
-        next(E,I,N,S,F,T,P,J)
+        updateUser(event.target.user.value,event.target.pass.value,E,I,N,S,F,T,P,J,user.NombreUsuario)
     }
 
-    function next(E,I,N,S,F,T,P,J){
-        axios.post('/api/Register', {name,password,personality,E,I,S,N,F,T,P,J})
-        .then((res) => {
-            res.data ? setOpen({success: true}): setOpen({error: true})
+    function updateUser(userName,pas,e,i,n,s,f,t,p,j,oldUserName) {
+        const pers = personality
+        axios.put("/api/UpdateU", {userName,pas,pers,e,i,n,s,f,t,p,j,oldUserName})
+        .then(res =>res.data ? setOpen({success: true}): setOpen({error: true}))
+    }
+
+    useEffect(()=>{
+        axios.get("/api/GetIdu",{withCredentials: true})
+        .then((res)=>{
+            console.log(res.data[0]);
+            setCogValues({P: Math.max(res.data[0].E,res.data[0].I),S: Math.max(res.data[0].S,res.data[0].N),T: Math.max(res.data[0].F,res.data[0].T),C: Math.max(res.data[0].P,res.data[0].J)})
+            setUser(res.data[0])
+            setCurrentPers(options.find(option => option.value == res.data[0].Personalidad_idPersonalidad))
+            console.log(Math.max(res.data[0].E,res.data[0].I)   )
+        }).then((res) => {
         })
-    }
+    },[]);
 
+    
     const handleClose = (e,reason) => {
-        open.success ? navigate('/Login') : 
         setOpen({success: false, error: false});
     }
 
@@ -123,50 +145,47 @@ export default function Register(){
 
     return(
         <div className="general--container">
-            <Navbar />
-            <section className="register--container">
-                <div style={{height: isBigger ? '580px': ''}} className="register--box" id="register--box">
-                    <div className="register--value">
+            <Navbar getData={getData} />
+            <section className="login--container" id="profile--container">
+                <div className="login--box" id="profile--box" >
+                    <div className="login--value">
                         <form onSubmit={handleSubmit}>
-                            <h2 className="register--title">Registro</h2>
+                            <h2 className="login--title">¡Hola {userData}!</h2>
                             <div className="inputbox">
-                                <input type="text" onChange={e=>setName(e.target.value)} required />
+                                <input type="text" name="user" defaultValue={user.NombreUsuario} required />
                                 <label htmlFor="">Usuario</label>
                             </div>
                             <div className="inputbox">
-                                <input type="password" onChange={e=>setPassword(e.target.value)} required/>
+                                <input type="password" name="pass" defaultValue={user.PassUsuario} required/>
                                 <label htmlFor="">Contraseña</label>
                             </div>
                             <div className="inputbox">
                                 <Personality />
                             </div>
-                            <div className="cognitive-functions-container" id="cognitiveF">
+                            <div className="cognitive-functions-container" style={{display:"flex"}} id="cognitiveF">
                                 <p>Porcentajes de tus funciones cognitivas</p>
                                 <div className="cognitive-functions">
                                     <div className="letters">
-                                        <input type="number" onChange={e=>setCogValues({P: e.target.value,S:cogValues.S,T:cogValues.T,C:cogValues.C})} required />
+                                        <input type="number" value={cogValues.P} onChange={e=>setCogValues({P: e.target.value,S:cogValues.S,T:cogValues.T,C:cogValues.C})} required />
                                         <label htmlFor="">{currentPers.label.charAt(0)}</label>
                                     </div>
                                     <div className="letters">
-                                        <input type="number" onChange={e=>setCogValues({P:cogValues.P,S: e.target.value,T:cogValues.T,C:cogValues.C})} required />
+                                        <input type="number" value={cogValues.S} onChange={e=>setCogValues({P:cogValues.P,S: e.target.value,T:cogValues.T,C:cogValues.C})} required />
                                         <label htmlFor="">{currentPers.label.charAt(1)}</label>
                                     </div>
                                     <div className="letters">
-                                        <input type="number" onChange={e=>setCogValues({P:cogValues.P,S:cogValues.S,T: e.target.value,C:cogValues.C})} required />
+                                        <input type="number" value={cogValues.T} onChange={e=>setCogValues({P:cogValues.P,S:cogValues.S,T: e.target.value,C:cogValues.C})} required />
                                         <label htmlFor="">{currentPers.label.charAt(2)}</label>
                                     </div>
                                     <div className="letters">
-                                        <input type="number" onChange={e=>setCogValues({P:cogValues.P,S:cogValues.S,T:cogValues.T,C: e.target.value})} required />
+                                        <input type="number" value={cogValues.C} onChange={e=>setCogValues({P:cogValues.P,S:cogValues.S,T:cogValues.T,C: e.target.value})} required />
                                         <label htmlFor="">{currentPers.label.charAt(3)}</label>
                                     </div>
                                 </div>
                             </div>
-                            <div className="register--personality">
-                                <p> ¡Conoce tu personalidad <a href="https://www.16personalities.com/es/test-de-personalidad" target="blank"> aquí!</a></p>
-                            </div>
-                            <button className="formButton">Registrarse</button>
-                            <div className="login">
-                                <p>¿Ya tienes una cuenta?<a href="/Login"> ¡Inicia sesión!</a></p>
+                            <button className="formButton"><Save />Guardar</button>
+                            <div className="close--sesion" onClick={()=>{destroyCookie()}}>
+                                <p>Cerrar sesion</p>
                             </div>
                         </form>
                     </div>

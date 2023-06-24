@@ -1,9 +1,9 @@
 import React,{useState} from "react";
 import { Link } from "react-router-dom"
-import Navbar from './Navbar'
-import Footer from './Footer'
+import Navbar from '../home/Navbar'
+import Footer from '../home/Footer'
 import axios from 'axios'
-import './Login.css'
+import './css/Login.css'
 import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';

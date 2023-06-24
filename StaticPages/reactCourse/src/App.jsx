@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
-import Landing from './components/Landing'
-import Login from './components/Login'
-import Register from './components/Register'
-import PlaceInfo from './components/PlaceInfo'
-import Profile from './components/Profile'
-import CRUDU from './components/CRUDU';
-import CRUDL from './components/CRUDL'
-import OpAdmin from './components/OpAdmin';
-import CreateU from './components/CreateU';
-import CreateP from './components/CreateP';
-import ViewP from './components/ViewP';
-import UpdateP from './components/UpdateP'
-import Recommendations from './components/Recommendations'
+import Landing from './components/home/Landing'
+import Login from './components/users/Login'
+import Register from './components/users/Register'
+import PlaceInfo from './components/places/PlaceInfo'
+import Profile from './components/users/Profile'
+import CRUDU from './components/places/CRUDU';
+import CRUDL from './components/places/CRUDL'
+import OpAdmin from './components/places/OpAdmin';
+import CreateU from './components/users/CreateU';
+import CreateP from './components/places/CreateP';
+import ViewP from './components/places/ViewP';
+import UpdateP from './components/places/UpdateP'
+import Recommendations from './components/places/Recommendations'
 import axios from 'axios';
 import { Route, Routes ,useNavigate} from 'react-router-dom';
 import { ProtectedRouteAdmin,ProtectedRouteUser } from './components/ProtectedRoute'
